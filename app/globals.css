@@ -1,4 +1,18 @@
-html {
+body {
   margin: 0px;
   padding: 0px;
+}
+
+svg {
+  width: 2rem;
+  height: 2rem;
+
+  fill: grey;
+
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    fill: black;
+
+    scale: 1.1;
+  }
 }
