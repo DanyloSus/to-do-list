@@ -5,7 +5,7 @@ import { grey } from "@mui/material/colors";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: grey[900],
