@@ -10,10 +10,11 @@ import Link from "next/link";
 
 const regExp = /^[a-zA-Z]$/;
 
-const FormLogin = () => {
+const FormRegister = () => {
   const formik = useFormik({
     initialValues: {
       name: "",
+      email: "",
       password: "",
     },
     validationSchema: Yup.object({
@@ -25,6 +26,10 @@ const FormLogin = () => {
           "Must be from 2 to 12 characters",
           (val) => val.length >= 2 && val.length <= 12
         ),
+      email: Yup.string()
+        .required()
+        .test("latin", "Must be latin characters", (val) => !regExp.test(val))
+        .test("not email", "Must have @", (val) => val.includes("@")),
       password: Yup.string()
         .required()
         .test("latin", "Must be latin characters", (val) => !regExp.test(val))
@@ -54,6 +59,16 @@ const FormLogin = () => {
           name="name"
         />
         <CustomTextField
+          label="Email"
+          value={formik.values.email}
+          error={Boolean(formik.errors.email)}
+          helperText={formik.errors.email}
+          onChange={formik.handleChange}
+          required
+          type="email"
+          name="email"
+        />
+        <CustomTextField
           label="Password"
           value={formik.values.password}
           error={Boolean(formik.errors.password)}
@@ -64,11 +79,11 @@ const FormLogin = () => {
           name="password"
         />
         <Box display="flex" gap={3} alignItems="center" justifyContent="center">
-          <Link href="/register">
-            <Button>Register</Button>
+          <Link href="/login">
+            <Button>Login</Button>
           </Link>
           <Button variant="outlined" type="submit">
-            Login
+            Register
           </Button>
         </Box>
       </FormControl>
@@ -76,4 +91,4 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+export default FormRegister;
