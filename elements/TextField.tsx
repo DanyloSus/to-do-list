@@ -5,7 +5,7 @@ import { grey } from "@mui/material/colors";
 const CustomTextField = styled(TextField)({
   backgroundColor: "white",
   borderRadius: "1rem",
-  width: "25rem",
+  width: "100%",
   "& > .MuiFormHelperText-root": {
     backgroundColor: grey[300],
     width: "100%",

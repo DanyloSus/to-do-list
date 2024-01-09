@@ -13,11 +13,11 @@ const regExp = /^[a-zA-Z]$/;
 const FormLogin = () => {
   const formik = useFormik({
     initialValues: {
-      name: "",
+      username: "",
       password: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string()
+      username: Yup.string()
         .required()
         .test("latin", "Must be latin characters", (val) => !regExp.test(val))
         .test(
@@ -44,14 +44,14 @@ const FormLogin = () => {
         sx={{ display: "flex", flexDirection: "column", gap: 3, mt: 3 }}
       >
         <CustomTextField
-          label="Name"
-          value={formik.values.name}
-          error={Boolean(formik.errors.name)}
-          helperText={formik.errors.name}
+          label="Username"
+          value={formik.values.username}
+          error={Boolean(formik.errors.username)}
+          helperText={formik.errors.username}
           onChange={formik.handleChange}
           required
           type="text"
-          name="name"
+          name="username"
         />
         <CustomTextField
           label="Password"
@@ -63,11 +63,21 @@ const FormLogin = () => {
           type="password"
           name="password"
         />
-        <Box display="flex" gap={3} alignItems="center" justifyContent="center">
-          <Link href="/register">
-            <Button>Register</Button>
-          </Link>
-          <Button variant="outlined" type="submit">
+        <Box
+          display="flex"
+          gap={3}
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Box display="flex" gap={3}>
+            <Link href="/">
+              <Button variant="text">Guest</Button>
+            </Link>
+            <Link href="/register">
+              <Button variant="outlined">Register</Button>
+            </Link>
+          </Box>
+          <Button variant="contained" type="submit">
             Login
           </Button>
         </Box>

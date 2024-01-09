@@ -19,26 +19,17 @@ const MainPage = () => {
       <Box
         display="flex"
         flexDirection="column"
-        justifyContent="space-between"
+        justifyContent="center"
         alignItems="center"
         width="100vw"
         height="100vh"
       >
-        <Typography
-          component="h1"
-          variant="h4"
-          fontWeight="700"
-          sx={{ mr: "auto", p: 2 }}
-        >
-          To Do List
-        </Typography>
         <Box maxWidth="966px" textAlign="center">
-          <Typography component="h2" variant="h1" fontWeight="700">
-            Welcome to the best reminder App
+          <Typography component="h1" variant="h2" fontWeight="700">
+            Welcome to the <i>To Do List</i>
           </Typography>
-          <Typography my="2rem">
-            Create your to do things into the filtered list, add photo, add your
-            deadline, and sort by many filters
+          <Typography my="1rem">
+            App by <a href="https://github.com/DanyloSus">Sushko Danylo</a>
           </Typography>
           <Box
             display="flex"
@@ -46,15 +37,26 @@ const MainPage = () => {
             justifyContent="center"
             gap="3rem"
           >
-            <Link href="/register">
-              <Button variant="text">Register</Button>
+            <Link href="/">
+              <Button variant="text">Guest</Button>
             </Link>
             <Link href="/login">
               <Button variant="outlined">Login</Button>
             </Link>
+            <Link href="/register">
+              <Button variant="contained">Register</Button>
+            </Link>
           </Box>
         </Box>
-        <Box display="flex" alignItems="center" ml="auto" p={2} gap="1rem">
+        <Box
+          display="flex"
+          position="absolute"
+          right={0}
+          p={2}
+          bottom={0}
+          alignItems="center"
+          gap="1rem"
+        >
           <a href="https://github.com/DanyloSus" target="__blanket">
             <svg
               xmlns="http://www.w3.org/2000/svg"
