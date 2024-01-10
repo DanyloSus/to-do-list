@@ -37,7 +37,7 @@ const MainPage = () => {
             justifyContent="center"
             gap="3rem"
           >
-            <Link href="/">
+            <Link href="/to-do">
               <Button variant="text">Guest</Button>
             </Link>
             <Link href="/login">

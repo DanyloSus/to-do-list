@@ -2,16 +2,21 @@
 
 import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import CustomTextField from "@/elements/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const regExp = /^[a-zA-Z]$/;
 
 const FormRegister = () => {
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -60,7 +65,12 @@ const FormRegister = () => {
     }),
     validateOnChange: false,
     onSubmit: (value) => {
-      axios({ method: "post", data: value, url: "/api/register" }).finally();
+      setIsRegistering(true);
+      axios({ method: "post", data: value, url: "/api/register" })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          router.push("/to-do");
+        });
     },
   });
 
@@ -82,6 +92,7 @@ const FormRegister = () => {
             helperText={formik.errors.name}
             onChange={formik.handleChange}
             required
+            disabled={isRegistering}
             type="text"
             name="name"
           />
@@ -92,6 +103,7 @@ const FormRegister = () => {
             helperText={formik.errors.surname}
             onChange={formik.handleChange}
             required
+            disabled={isRegistering}
             type="text"
             name="surname"
           />
@@ -103,6 +115,7 @@ const FormRegister = () => {
           helperText={formik.errors.username}
           onChange={formik.handleChange}
           required
+          disabled={isRegistering}
           type="text"
           name="username"
         />
@@ -113,6 +126,7 @@ const FormRegister = () => {
           helperText={formik.errors.email}
           onChange={formik.handleChange}
           required
+          disabled={isRegistering}
           type="email"
           name="email"
         />
@@ -123,6 +137,7 @@ const FormRegister = () => {
           helperText={formik.errors.password}
           onChange={formik.handleChange}
           required
+          disabled={isRegistering}
           type="password"
           name="password"
         />
@@ -133,14 +148,18 @@ const FormRegister = () => {
           justifyContent="space-between"
         >
           <Box display="flex" gap={3}>
-            <Link href="/">
-              <Button variant="text">Guest</Button>
+            <Link href="/to-do">
+              <Button variant="text" disabled={isRegistering}>
+                Guest
+              </Button>
             </Link>
             <Link href="/login">
-              <Button variant="outlined">Login</Button>
+              <Button variant="outlined" disabled={isRegistering}>
+                Login
+              </Button>
             </Link>
           </Box>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={isRegistering}>
             Register
           </Button>
         </Box>

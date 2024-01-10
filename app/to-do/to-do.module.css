@@ -1,0 +1,21 @@
+.ToDoBox {
+}
+
+.ToDoBox > textarea {
+  border: 0px;
+}
+
+.ToDoBox_Heading {
+  font-size: 60px;
+
+  resize: none;
+
+  width: calc(100vw - 400px);
+}
+
+.ToDoBox_Content {
+  resize: none;
+
+  width: calc(100vw - 400px);
+  min-height: calc(100vh - 400px);
+}

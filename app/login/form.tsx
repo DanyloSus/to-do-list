@@ -70,7 +70,7 @@ const FormLogin = () => {
           justifyContent="space-between"
         >
           <Box display="flex" gap={3}>
-            <Link href="/">
+            <Link href="/to-do">
               <Button variant="text">Guest</Button>
             </Link>
             <Link href="/register">

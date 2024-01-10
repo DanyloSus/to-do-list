@@ -7,7 +7,6 @@ const CustomTextField = styled(TextField)({
   borderRadius: "1rem",
   width: "100%",
   "& > .MuiFormHelperText-root": {
-    backgroundColor: grey[300],
     width: "100%",
     margin: "0 0 0 0",
   },
