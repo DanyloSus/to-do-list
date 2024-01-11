@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import { Provider } from "react-redux";
 import store from "@/lib/store";
-import TodoList from "@/elements/TodoList";
+import TodoList from "@/elements/TodoElements/TodoList";
 
 export default function RootLayout({
   children,

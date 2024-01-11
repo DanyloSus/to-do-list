@@ -1,16 +1,17 @@
 import { Box } from "@mui/material";
-import { TextareaAutosize } from "@mui/base/TextareaAutosize";
 import React from "react";
 
 import classes from "./../to-do.module.css";
-import { useSelector } from "react-redux";
-import { Store } from "@/lib/store";
-import HeadingArea from "@/elements/TextArea/HeadingArea";
-import ContentArea from "@/elements/TextArea/ContentArea";
+import HeadingArea from "@/elements/ToDoRightSection/HeadingArea";
+import ContentArea from "@/elements/ToDoRightSection/ContentArea";
+import { useDispatch } from "react-redux";
+import Header from "@/elements/ToDoRightSection/Header";
 
 const page = ({ params }: { params: { slug: string } }) => {
   return (
     <Box p={2} overflow="hidden auto" className={classes.ToDoBox}>
+      <Header slug={params.slug} />
+      <hr />
       <HeadingArea slug={params.slug} />
       <hr />
       <ContentArea slug={params.slug} />

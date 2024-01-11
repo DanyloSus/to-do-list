@@ -4,7 +4,7 @@ import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
-import CustomTextField from "@/elements/TextField";
+import CustomTextField from "@/elements/Form/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
 

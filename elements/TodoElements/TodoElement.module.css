@@ -2,6 +2,12 @@
   overflow: hidden;
   overflow-wrap: break-word;
   padding: 8px;
+
+  cursor: pointer;
+}
+
+.TodoBlock:hover {
+  background-color: #eeeeee;
 }
 
 .TodoBlock_Content {

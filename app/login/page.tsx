@@ -2,7 +2,7 @@ import { ThemeProvider } from "@mui/material";
 import React from "react";
 import FormLogin from "./form";
 import { theme } from "../page";
-import Form from "@/elements/Form";
+import Form from "@/elements/Form/Form";
 
 const LoginPage = () => {
   return (
