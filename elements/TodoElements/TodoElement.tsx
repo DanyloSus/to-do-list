@@ -1,4 +1,4 @@
-import { TodoInfo } from "@/lib/features/todos/todosSlice";
+import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
 import { Box, Typography } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";

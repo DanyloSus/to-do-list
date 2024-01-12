@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteTodo } from "@/lib/features/todos/todosSlice";
+import { deleteTodo } from "@/lib/redux/todos/features/todosSlice";
 import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React from "react";

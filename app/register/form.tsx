@@ -64,8 +64,41 @@ const FormRegister = () => {
         ),
     }),
     validateOnChange: false,
-    onSubmit: (value) => {
+    onSubmit: async (value) => {
       setIsRegistering(true);
+
+      const resUsername = await axios({
+        method: "post",
+        data: { username: value.username },
+        url: "/api/checkUsername",
+      });
+
+      const { user } = resUsername.data;
+
+      console.log(user);
+
+      if (user) {
+        formik.errors.username = "Username is already exist";
+
+        setIsRegistering(false);
+        return;
+      }
+
+      const resEmail = await axios({
+        method: "post",
+        data: { email: value.email },
+        url: "/api/checkEmail",
+      });
+
+      const { userEmail } = resEmail.data;
+
+      if (userEmail) {
+        formik.errors.email = "Email is already exist";
+
+        setIsRegistering(false);
+        return;
+      }
+
       axios({ method: "post", data: value, url: "/api/register" })
         .catch((err) => console.log(err))
         .finally(() => {

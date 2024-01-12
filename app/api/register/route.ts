@@ -2,22 +2,11 @@ import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import React from "react";
 import User from "@/models/User";
+import bcrypt from "bcryptjs";
+import { connectMongoDB } from "@/lib/mongodb/mongodb";
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const MONGODB_URI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}.n9i9gx6.mongodb.net/`;
-
-  let client;
-
-  try {
-    client = await mongoose.connect(MONGODB_URI);
-    console.log("DB IS CONNECTED");
-  } catch (error) {
-    console.log("DB IS NOT CONNECTED " + error);
-    return NextResponse.json(
-      { message: `DB IS NOT CONNECTED ${error}` },
-      { status: 501 }
-    );
-  }
+  await connectMongoDB();
 
   const data = await req.json();
 
@@ -41,8 +30,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     );
   }
 
+  const hashedPasword = await bcrypt.hash(password, 10);
+
   const newData = {
     ...data,
+    password: hashedPasword,
     date: new Date(),
   };
 

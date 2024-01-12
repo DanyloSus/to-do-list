@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TodoElement from "./TodoElement";
-import { TodoInfo, createTodo } from "@/lib/features/todos/todosSlice";
-import { Store } from "@/lib/store";
+import { TodoInfo, createTodo } from "@/lib/redux/todos/features/todosSlice";
+import { Store } from "@/lib/redux/store";
 import grey from "@mui/material/colors/grey";
 
 const TodoList = () => {

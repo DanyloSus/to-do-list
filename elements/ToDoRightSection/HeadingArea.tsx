@@ -2,11 +2,11 @@
 
 import classes from "@/app/to-do/to-do.module.css";
 
-import { Store } from "@/lib/store";
+import { Store } from "@/lib/redux/store";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeHeading } from "@/lib/features/todos/todosSlice";
+import { changeHeading } from "@/lib/redux/todos/features/todosSlice";
 
 const HeadingArea = (props: { slug: string }) => {
   const todos = useSelector((state: Store) => state.todos);

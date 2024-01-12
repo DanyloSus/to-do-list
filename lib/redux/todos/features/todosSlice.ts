@@ -6,8 +6,15 @@ export interface TodoInfo {
   id: string;
 }
 
-const storedTodoList = localStorage.getItem("TodoList");
-const initialState: TodoInfo[] & [] = storedTodoList
+let storedTodoList: string | null;
+
+if (typeof window !== "undefined") {
+  storedTodoList = localStorage.getItem("TodoList");
+} else {
+  storedTodoList = null;
+}
+
+const initialState: TodoInfo[] = storedTodoList
   ? JSON.parse(storedTodoList)
   : [];
 
@@ -46,7 +53,10 @@ const todosSlice = createSlice({
 
       localStorage.setItem("TodoList", JSON.stringify(state));
     },
-    deleteTodo(state: TodoInfo[], action: PayloadAction<{ id: string }>): any {
+    deleteTodo(
+      state: TodoInfo[],
+      action: PayloadAction<{ id: string }>
+    ): TodoInfo[] {
       const deletedTodoIndex = state.findIndex(
         (todo) => todo.id === action.payload.id
       );
