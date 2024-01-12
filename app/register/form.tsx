@@ -65,35 +65,22 @@ const FormRegister = () => {
     }),
     validateOnChange: false,
     onSubmit: async (value) => {
+      console.log("sadasd");
+
       setIsRegistering(true);
 
-      const resUsername = await axios({
+      let res = await axios({
         method: "post",
-        data: { username: value.username },
-        url: "/api/checkUsername",
+        data: { username: value.username, email: value.email },
+        url: "/api/check",
       });
 
-      const { user } = resUsername.data;
-
-      console.log(user);
-
-      if (user) {
-        formik.errors.username = "Username is already exist";
-
-        setIsRegistering(false);
-        return;
-      }
-
-      const resEmail = await axios({
-        method: "post",
-        data: { email: value.email },
-        url: "/api/checkEmail",
-      });
-
-      const { userEmail } = resEmail.data;
-
-      if (userEmail) {
-        formik.errors.email = "Email is already exist";
+      if (res.data.user) {
+        if (res.data.email) {
+          formik.errors.email = "Email already exists";
+        } else {
+          formik.errors.username = "Username already exists";
+        }
 
         setIsRegistering(false);
         return;
