@@ -12,24 +12,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head></head>
-      <body
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          overflowX: "hidden",
-          position: "relative",
-        }}
-      >
-        <Provider store={store}>
-          <TodoList />
-          <Box width="100%" height="100vh" ml="365px">
-            {children}
-          </Box>
-        </Provider>
-      </body>
-    </html>
+    <Box
+      style={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        overflowX: "hidden",
+        position: "relative",
+      }}
+    >
+      <Provider store={store}>
+        <TodoList />
+        <Box width="100%" height="100vh" ml="365px">
+          {children}
+        </Box>
+      </Provider>
+    </Box>
   );
 }

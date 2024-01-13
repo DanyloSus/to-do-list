@@ -7,10 +7,14 @@ import * as Yup from "yup";
 import CustomTextField from "@/elements/Form/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const regExp = /^[a-zA-Z]$/;
 
 const FormLogin = () => {
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -35,7 +39,24 @@ const FormLogin = () => {
         ),
     }),
     validateOnChange: false,
-    onSubmit: () => {},
+    onSubmit: async (value) => {
+      try {
+        const res = await signIn("credentials", {
+          username: value.username,
+          password: value.password,
+          redirect: false,
+        });
+
+        if (res?.error) {
+          console.log("error");
+          return;
+        }
+
+        router.replace("to-do");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   });
 
   return (

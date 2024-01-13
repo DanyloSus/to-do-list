@@ -89,7 +89,7 @@ const FormRegister = () => {
       axios({ method: "post", data: value, url: "/api/register" })
         .catch((err) => console.log(err))
         .finally(() => {
-          router.push("/to-do");
+          router.replace("login");
         });
     },
   });
