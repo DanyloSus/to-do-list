@@ -4,7 +4,7 @@ import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
-const authOptions = {
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -23,9 +23,9 @@ const authOptions = {
             return null;
           }
 
-          const hashedPassword = await bcrypt.compare(password, user.password);
+          const checkedPassword = await bcrypt.compare(password, user.password);
 
-          if (!hashedPassword) {
+          if (!checkedPassword) {
             return null;
           }
 
