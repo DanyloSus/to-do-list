@@ -26,7 +26,7 @@ const Header = (props: { slug: string }) => {
         onClick={handleDelete}
       >
         <path
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
           d="M6 18 18 6M6 6l12 12"
         />

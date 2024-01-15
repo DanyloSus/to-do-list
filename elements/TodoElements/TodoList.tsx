@@ -1,18 +1,26 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TodoElement from "./TodoElement";
 import { TodoInfo, createTodo } from "@/lib/redux/todos/features/todosSlice";
 import { Store } from "@/lib/redux/store";
 import grey from "@mui/material/colors/grey";
+import { signOut, useSession } from "next-auth/react";
 
 const TodoList = () => {
   const todos = useSelector((state: Store) => state.todos);
 
+  const { data: session } = useSession();
+
   const dispatch = useDispatch();
 
+  console.log(session?.user);
+
   function createTodoHandler() {
-    dispatch(createTodo());
+    if (!session?.user) {
+      dispatch(createTodo());
+      return;
+    }
   }
 
   return (
@@ -26,7 +34,22 @@ const TodoList = () => {
       left="0px"
       top="0px"
     >
-      <Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        px={3}
+        py={1}
+        alignItems="center"
+      >
+        <Box>
+          <Typography
+            component="h2"
+            sx={{ fontSize: "32px", cursor: "pointer" }}
+            onClick={() => signOut()}
+          >
+            {session?.user?.name}
+          </Typography>
+        </Box>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -36,20 +59,21 @@ const TodoList = () => {
           onClick={createTodoHandler}
         >
           <path
-            stroke-linecap="round"
+            strokeLinecap="round"
             stroke-linejoin="round"
             d="M12 4.5v15m7.5-7.5h-15"
           />
         </svg>
       </Box>
-      {todos.map((todo: TodoInfo) => (
-        <TodoElement
-          heading={todo.heading}
-          content={todo.content}
-          id={todo.id}
-          key={todo.id}
-        />
-      ))}
+      {!session?.user &&
+        todos.map((todo: TodoInfo) => (
+          <TodoElement
+            heading={todo.heading}
+            content={todo.content}
+            id={todo.id}
+            key={todo.id}
+          />
+        ))}
     </Box>
   );
 };

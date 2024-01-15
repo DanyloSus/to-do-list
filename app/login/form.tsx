@@ -2,10 +2,10 @@
 
 import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import CustomTextField from "@/elements/Form/TextField";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 const regExp = /^[a-zA-Z]$/;
 
 const FormLogin = () => {
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [error, setError] = useState(false);
   const router = useRouter();
 
   const formik = useFormik({
@@ -40,6 +42,7 @@ const FormLogin = () => {
     }),
     validateOnChange: false,
     onSubmit: async (value) => {
+      setIsRegistering(true);
       try {
         const res = await signIn("credentials", {
           username: value.username,
@@ -49,12 +52,16 @@ const FormLogin = () => {
 
         if (res?.error) {
           console.log("error");
+          formik.setErrors({ username: true, password: true });
+          setError(true);
+          setIsRegistering(false);
           return;
         }
 
         router.replace("to-do");
       } catch (error) {
         console.log(error);
+        setIsRegistering(false);
       }
     },
   });
@@ -73,6 +80,7 @@ const FormLogin = () => {
           required
           type="text"
           name="username"
+          disabled={isRegistering}
         />
         <CustomTextField
           label="Password"
@@ -83,7 +91,13 @@ const FormLogin = () => {
           required
           type="password"
           name="password"
+          disabled={isRegistering}
         />
+        {error ? (
+          <Typography component="p" my={-1} color="error">
+            Username or password is uncorrect!
+          </Typography>
+        ) : null}
         <Box
           display="flex"
           gap={3}
@@ -92,13 +106,17 @@ const FormLogin = () => {
         >
           <Box display="flex" gap={3}>
             <Link href="/to-do">
-              <Button variant="text">Guest</Button>
+              <Button variant="text" disabled={isRegistering}>
+                Guest
+              </Button>
             </Link>
             <Link href="/register">
-              <Button variant="outlined">Register</Button>
+              <Button variant="outlined" disabled={isRegistering}>
+                Register
+              </Button>
             </Link>
           </Box>
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" disabled={isRegistering}>
             Login
           </Button>
         </Box>

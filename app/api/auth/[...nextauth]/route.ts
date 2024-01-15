@@ -8,7 +8,10 @@ const authOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
-      credentials: {},
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
 
       async authorize(credentials) {
         const { username, password } = credentials;
@@ -22,7 +25,7 @@ const authOptions = {
 
           const hashedPassword = await bcrypt.compare(password, user.password);
 
-          if (!password) {
+          if (!hashedPassword) {
             return null;
           }
 

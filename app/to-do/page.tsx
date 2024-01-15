@@ -6,13 +6,8 @@ import React from "react";
 import classes from "./to-do.module.css";
 import { useDispatch } from "react-redux";
 import { createTodo } from "@/lib/redux/todos/features/todosSlice";
-import { useSession } from "next-auth/react";
 
 const Page = () => {
-  const { data: session } = useSession();
-
-  console.log(session?.user);
-
   const dispatch = useDispatch();
 
   function createTodoHandler() {
@@ -29,7 +24,7 @@ const Page = () => {
         onClick={createTodoHandler}
       >
         <path
-          stroke-linecap="round"
+          strokeLinecap="round"
           stroke-linejoin="round"
           d="M12 4.5v15m7.5-7.5h-15"
         />

@@ -69,17 +69,19 @@ const FormRegister = () => {
 
       setIsRegistering(true);
 
-      let res = await axios({
+      const res = await axios({
         method: "post",
         data: { username: value.username, email: value.email },
         url: "/api/check",
       });
 
+      console.log(res);
+
       if (res.data.user) {
         if (res.data.email) {
-          formik.errors.email = "Email already exists";
+          formik.setErrors({ email: "Email already exists" });
         } else {
-          formik.errors.username = "Username already exists";
+          formik.setErrors({ username: "Username already exists" });
         }
 
         setIsRegistering(false);
