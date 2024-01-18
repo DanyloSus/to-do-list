@@ -12,10 +12,10 @@ const TodoElement = (props: TodoInfo) => {
 
   return (
     <Box
-      onClick={() => router.push(`/to-do/${props.id}`)}
+      onClick={() => router.push(`/to-do/${props._id}`)}
       className={classes.TodoBlock}
       sx={
-        params.slug === props.id
+        params.slug === props._id
           ? { backgroundColor: `${grey[300]} !important` }
           : {}
       }

@@ -7,9 +7,14 @@ export async function PUT(
   { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
-  const { newHeading: heading, newContent: content } = await req.json();
+  const {
+    newHeading: heading,
+    newContent: content,
+    attachedId,
+  } = await req.json();
+
   await connectMongoDB();
-  await ToDo.findByIdAndUpdate(slug, { heading, content });
+  await ToDo.findByIdAndUpdate(slug, { heading, content, attachedId });
   return NextResponse.json({ message: "ToDo is updated" }, { status: 201 });
 }
 
@@ -19,6 +24,6 @@ export async function GET(
 ) {
   const { slug } = params;
   await connectMongoDB();
-  const topic = await ToDo.findOne({ _id: slug });
-  return NextResponse.json({ topic });
+  const toDo = await ToDo.findOne({ _id: slug });
+  return NextResponse.json({ toDo });
 }

@@ -1,26 +1,34 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import TodoElement from "./TodoElement";
-import { TodoInfo, createTodo } from "@/lib/redux/todos/features/todosSlice";
-import { Store } from "@/lib/redux/store";
+import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
 import grey from "@mui/material/colors/grey";
 import { signOut, useSession } from "next-auth/react";
+import axios from "axios";
 
 const TodoList = () => {
-  const todos = useSelector((state: Store) => state.todos);
+  const [todos, setTodos] = useState([]);
 
   const { data: session } = useSession();
 
-  const dispatch = useDispatch();
+  const getToDos = () => {
+    axios
+      .get(`/api/todos?attachedId=${session?.user.id}`)
+      .then((res) => setTodos(res.data.toDos));
+  };
 
-  console.log(session?.user);
+  useEffect(() => {
+    getToDos();
+  }, [session]);
 
   function createTodoHandler() {
-    if (!session?.user) {
-      dispatch(createTodo());
-      return;
-    }
+    axios
+      .post("/api/todos", {
+        heading: "",
+        content: "",
+        attachedId: session?.user.id,
+      })
+      .finally(() => getToDos());
   }
 
   return (
@@ -65,13 +73,13 @@ const TodoList = () => {
           />
         </svg>
       </Box>
-      {!session?.user &&
+      {session?.user &&
         todos.map((todo: TodoInfo) => (
           <TodoElement
             heading={todo.heading}
             content={todo.content}
-            id={todo.id}
-            key={todo.id}
+            _id={todo._id}
+            key={todo._id}
           />
         ))}
     </Box>
@@ -79,3 +87,6 @@ const TodoList = () => {
 };
 
 export default TodoList;
+function useCallback(arg0: () => void) {
+  throw new Error("Function not implemented.");
+}

@@ -3,7 +3,7 @@ import { PayloadAction, createSlice, nanoid } from "@reduxjs/toolkit";
 export interface TodoInfo {
   heading: string;
   content: string;
-  id: string;
+  _id: string;
 }
 
 let storedTodoList: string | null;
@@ -24,9 +24,11 @@ const todosSlice = createSlice({
   reducers: {
     changeHeading(
       state,
-      action: PayloadAction<{ id: string; heading: string }>
+      action: PayloadAction<{ _id: string; heading: string }>
     ) {
-      const todoToChange = state.find((todo) => todo.id === action.payload.id);
+      const todoToChange = state.find(
+        (todo) => todo._id === action.payload._id
+      );
 
       if (todoToChange) {
         todoToChange.heading = action.payload.heading;
@@ -35,9 +37,11 @@ const todosSlice = createSlice({
     },
     changeContent(
       state,
-      action: PayloadAction<{ id: string; content: string }>
+      action: PayloadAction<{ _id: string; content: string }>
     ) {
-      const todoToChange = state.find((todo) => todo.id === action.payload.id);
+      const todoToChange = state.find(
+        (todo) => todo._id === action.payload._id
+      );
 
       if (todoToChange) {
         todoToChange.content = action.payload.content;
@@ -48,17 +52,17 @@ const todosSlice = createSlice({
       state.push({
         heading: "",
         content: "",
-        id: nanoid(),
+        _id: nanoid(),
       });
 
       localStorage.setItem("TodoList", JSON.stringify(state));
     },
     deleteTodo(
       state: TodoInfo[],
-      action: PayloadAction<{ id: string }>
+      action: PayloadAction<{ _id: string }>
     ): TodoInfo[] {
       const deletedTodoIndex = state.findIndex(
-        (todo) => todo.id === action.payload.id
+        (todo) => todo._id === action.payload._id
       );
 
       if (deletedTodoIndex !== -1) {

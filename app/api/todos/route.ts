@@ -3,15 +3,21 @@ import ToDo from "@/models/To-Do";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { heading, content } = await req.json();
+  const { heading, content, attachedId } = await req.json();
   await connectMongoDB();
-  await ToDo.create({ heading, content });
+  await ToDo.create({ heading, content, attachedId });
   return NextResponse.json({ message: "ToDo is created" }, { status: 201 });
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const url = req.url;
+
+  const params = url.split("=")[1];
+
+  console.log("params", params);
+
   await connectMongoDB();
-  const toDos = await ToDo.findOne();
+  const toDos = await ToDo.find({ attachedId: params });
   return NextResponse.json({ toDos });
 }
 
