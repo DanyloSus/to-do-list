@@ -6,21 +6,26 @@ import { Store } from "@/lib/redux/store";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeHeading } from "@/lib/redux/todos/features/todosSlice";
 
-const HeadingArea = (props: { slug: string }) => {
+const HeadingArea = (props: {
+  slug: string;
+  setHeading: React.Dispatch<React.SetStateAction<string>>;
+  setIsChanged: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const todos = useSelector((state: Store) => state.todos);
   const [content, setContent] = useState<string | undefined>("");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const todo = todos.find((todo) => todo.id === props.slug);
+    const todo = todos.find((todo) => todo._id === props.slug);
     setContent(todo?.heading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function changeHeadingHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    props.setHeading(e.target.value);
+    props.setIsChanged(true);
     setContent(e.target.value);
-    dispatch(changeHeading({ id: props.slug, heading: e.target.value }));
   }
 
   return (

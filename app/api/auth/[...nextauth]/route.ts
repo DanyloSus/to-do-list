@@ -3,8 +3,9 @@ import User from "@/models/User";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { NextAuthOptions, Session } from "next-auth";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -14,7 +15,10 @@ export const authOptions = {
       },
 
       async authorize(credentials) {
-        const { username, password } = credentials;
+        const { username, password } = credentials as {
+          username: string;
+          password: string;
+        };
         try {
           await connectMongoDB();
           const user = await User.findOne({ username });
@@ -37,7 +41,7 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, session }) {
+    async jwt({ token, user }) {
       if (user) {
         return {
           ...token,
@@ -47,7 +51,7 @@ export const authOptions = {
       }
       return token;
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user.id = token.id;
       session.user.surname = token.surname;
       return session;

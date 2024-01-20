@@ -5,22 +5,26 @@ import classes from "@/app/to-do/to-do.module.css";
 import { Store } from "@/lib/redux/store";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { changeContent } from "@/lib/redux/todos/features/todosSlice";
+import { useSelector } from "react-redux";
 
-const ContentArea = (props: { slug: string }) => {
+const ContentArea = (props: {
+  slug: string;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
+  setIsChanged: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const todos = useSelector((state: Store) => state.todos);
   const [content, setContent] = useState<string | undefined>("");
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    const todo = todos.find((todo) => todo.id === props.slug);
+    const todo = todos.find((todo) => todo._id === props.slug);
     setContent(todo?.content);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function changeContentHandler(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    props.setContent(e.target.value);
+    props.setIsChanged(true);
     setContent(e.target.value);
-    dispatch(changeContent({ id: props.slug, content: e.target.value }));
   }
 
   return (

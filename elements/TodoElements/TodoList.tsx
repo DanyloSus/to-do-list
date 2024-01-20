@@ -1,24 +1,34 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import TodoElement from "./TodoElement";
 import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
 import grey from "@mui/material/colors/grey";
 import { signOut, useSession } from "next-auth/react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setToDos } from "@/lib/redux/todos/features/todosSlice";
+import { Store } from "@/lib/redux/store";
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+  const todos = useSelector((state: Store) => state.todos);
 
   const { data: session } = useSession();
 
-  const getToDos = () => {
-    axios
-      .get(`/api/todos?attachedId=${session?.user.id}`)
-      .then((res) => setTodos(res.data.toDos));
+  const dispatch = useDispatch();
+
+  const setToDosHandle = () => {
+    console.log(session?.user.id);
+
+    axios.get(`/api/todos?attachedId=${session?.user.id}`).then((res) => {
+      dispatch(setToDos(res.data.toDos));
+    });
   };
 
+  console.log("todos", todos);
+
   useEffect(() => {
-    getToDos();
+    setToDosHandle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   function createTodoHandler() {
@@ -28,7 +38,7 @@ const TodoList = () => {
         content: "",
         attachedId: session?.user.id,
       })
-      .finally(() => getToDos());
+      .finally(() => setToDosHandle());
   }
 
   return (
@@ -45,14 +55,15 @@ const TodoList = () => {
       <Box
         display="flex"
         justifyContent="space-between"
-        px={3}
+        px={1}
         py={1}
         alignItems="center"
       >
         <Box>
           <Typography
             component="h2"
-            sx={{ fontSize: "32px", cursor: "pointer" }}
+            variant="h4"
+            sx={{ cursor: "pointer" }}
             onClick={() => signOut()}
           >
             {session?.user?.name}

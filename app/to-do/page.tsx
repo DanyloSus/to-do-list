@@ -4,15 +4,8 @@ import { Box } from "@mui/material";
 import React from "react";
 
 import classes from "./to-do.module.css";
-import { useDispatch } from "react-redux";
-import { createTodo } from "@/lib/redux/todos/features/todosSlice";
 
 const Page = () => {
-  const dispatch = useDispatch();
-
-  function createTodoHandler() {
-    dispatch(createTodo());
-  }
   return (
     <Box p={2} overflow="hidden auto" className={classes.ToDoBox}>
       <svg
@@ -21,7 +14,6 @@ const Page = () => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        onClick={createTodoHandler}
       >
         <path
           strokeLinecap="round"
