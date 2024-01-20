@@ -1,6 +1,8 @@
+//import from libraries
 import { styled } from "@mui/material/styles";
 import { TextField } from "@mui/material";
 
+// create custom textfield
 const CustomTextField = styled(TextField)({
   backgroundColor: "white",
   borderRadius: "1rem",

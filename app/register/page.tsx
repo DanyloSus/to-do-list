@@ -1,23 +1,22 @@
-import { ThemeProvider } from "@mui/material";
-import React from "react";
-import FormRegister from "./form";
-import { theme } from "../page";
-import Form from "@/elements/Form/Form";
+//import from libraries
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+
+//internal imports
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import FormRegister from "./form";
+import Form from "@/elements/Form/Form";
 
 const RegistrationPage = async () => {
+  //get session
   const session = await getServerSession(authOptions);
 
-  if (session) redirect("/to-do");
+  if (session) redirect("/to-do"); // if user is signed, then redirect them to to-do list page but deleting in history /register
 
   return (
-    <ThemeProvider theme={theme}>
-      <Form heading="Register">
-        <FormRegister />
-      </Form>
-    </ThemeProvider>
+    <Form heading="Register">
+      <FormRegister />
+    </Form>
   );
 };
 

@@ -1,17 +1,21 @@
-import { connectMongoDB } from "@/lib/mongodb/mongodb";
-import User from "@/models/User";
+//import from libraries
 import { NextRequest, NextResponse } from "next/server";
+
+//internal imports
+import User from "@/models/User";
+import { connectMongoDB } from "@/lib/mongodb/mongodb";
 
 export async function POST(req: NextRequest) {
   try {
-    await connectMongoDB();
-    const data = await req.json();
-    const { username, email }: { username: string; email: string } = data;
+    await connectMongoDB(); // connect db
+    const data = await req.json(); // get values
+    const { username, email }: { username: string; email: string } = data; // destructuring
 
-    let user = await User.findOne({ username }).select("_id");
+    let user = await User.findOne({ username }).select("_id"); // find id by username
 
     if (!user) {
-      user = await User.findOne({ email }).select("_id");
+      // if by username user didn't find
+      user = await User.findOne({ email }).select("_id"); // find id by email
 
       return NextResponse.json({ user, email: true });
     }

@@ -1,13 +1,16 @@
+//internal imports
 import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
-import { Box, Typography } from "@mui/material";
-import { useParams, useRouter } from "next/navigation";
-import React from "react";
-
 import classes from "./TodoElement.module.css";
+
+//import from libraries
+import { Box, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
+import { useParams, useRouter } from "next/navigation";
 
 const TodoElement = (props: TodoInfo) => {
+  // get router
   const router = useRouter();
+  // get params
   const params = useParams();
 
   return (

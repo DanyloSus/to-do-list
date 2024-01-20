@@ -1,23 +1,22 @@
-import { ThemeProvider } from "@mui/material";
-import React from "react";
-import FormLogin from "./form";
-import { theme } from "../page";
-import Form from "@/elements/Form/Form";
-import { getServerSession } from "next-auth";
+//import from libraries
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+
+//internal imports
+import FormLogin from "./form";
+import Form from "@/elements/Form/Form";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
 const LoginPage = async () => {
+  //get session
   const session = await getServerSession(authOptions);
 
-  if (session) redirect("/to-do");
+  if (session) redirect("/to-do"); // if user is signed, then redirect them to to-do list page but deleting in history /login
 
   return (
-    <ThemeProvider theme={theme}>
-      <Form heading="Login">
-        <FormLogin />
-      </Form>
-    </ThemeProvider>
+    <Form heading="Login">
+      <FormLogin />
+    </Form>
   );
 };
 

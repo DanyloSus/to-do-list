@@ -1,16 +1,19 @@
+//useEffect in TodoList needs client side rendering
 "use client";
 
-import { Box, ThemeProvider } from "@mui/material";
-import React from "react";
+//import from libraries
+import { Box } from "@mui/material";
 import { Provider } from "react-redux";
+
+//internal imports
 import store from "@/lib/redux/store";
 import TodoList from "@/elements/TodoElements/TodoList";
-import { theme } from "../page";
+import ThemeProviderElement from "@/elements/ThemeProviderElement";
 import { ChildrenType } from "@/types/types";
 
 export default function RootLayout({ children }: ChildrenType) {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProviderElement>
       <Box
         style={{
           width: "100vw",
@@ -27,6 +30,6 @@ export default function RootLayout({ children }: ChildrenType) {
           </Box>
         </Provider>
       </Box>
-    </ThemeProvider>
+    </ThemeProviderElement>
   );
 }

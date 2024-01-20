@@ -1,17 +1,20 @@
-import mongoose from "mongoose";
-import { NextRequest, NextResponse } from "next/server";
-import User from "@/models/User";
+//import from libraries
 import bcrypt from "bcryptjs";
+import { NextRequest, NextResponse } from "next/server";
+
+//internal imports
+import User from "@/models/User";
 import { connectMongoDB } from "@/lib/mongodb/mongodb";
 
-export async function POST(req: NextRequest, res: NextResponse) {
-  await connectMongoDB();
+export async function POST(req: NextRequest) {
+  await connectMongoDB(); // connect db
 
-  const data = await req.json();
+  const data = await req.json(); // get values
 
-  const { name, surname, username, email, password } = data;
+  const { name, surname, username, email, password } = data; // destructuring
 
   if (
+    // server side validation
     !name ||
     !username ||
     !surname ||
@@ -29,18 +32,19 @@ export async function POST(req: NextRequest, res: NextResponse) {
     );
   }
 
+  // hash password
   const hashedPasword = await bcrypt.hash(password, 10);
 
+  // add new password
   const newData = {
     ...data,
     password: hashedPasword,
-    date: new Date(),
   };
 
   try {
-    await User.create(newData);
+    await User.create(newData); // create one user
     console.log("User is created");
-    return NextResponse.json({ message: "YEAH" }, { status: 201 });
+    return NextResponse.json({ message: "User is created" }, { status: 201 });
   } catch (error) {
     console.log("User is not created");
     return NextResponse.json(

@@ -1,8 +1,7 @@
-"use client";
-
+//import from libraries
 import { Box } from "@mui/material";
-import React from "react";
 
+//import styles
 import classes from "./to-do.module.css";
 
 const Page = () => {
@@ -17,7 +16,7 @@ const Page = () => {
       >
         <path
           strokeLinecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
           d="M12 4.5v15m7.5-7.5h-15"
         />
       </svg>

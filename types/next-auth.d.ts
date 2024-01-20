@@ -2,6 +2,7 @@ import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 
 import { JWT } from "next-auth/jwt";
 
+// change type of JWT token in callback
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
@@ -9,15 +10,15 @@ declare module "next-auth/jwt" {
   }
 }
 
+// change type of User and Session in callback
 declare module "next-auth" {
-  interface User {
+  interface User extends DefaultUser {
     id: string;
     surname: string;
   }
 
   interface Session {
     user: {
-      /** The user's name. */
       surname: string;
       id: string;
     } & DefaultSession["user"];

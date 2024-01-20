@@ -1,22 +1,30 @@
+//useState needs client render
 "use client";
 
+//import from libraries
 import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
-import CustomTextField from "@/elements/Form/TextField";
 import { Box, Button } from "@mui/material";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
+//internal imports
+import CustomTextField from "@/elements/Form/TextField";
+
+//regular expretion for check is latin
 export const regExp = /^[a-zA-Z]$/;
 
 const FormRegister = () => {
+  //loading state
   const [isRegistering, setIsRegistering] = useState(false);
 
+  //get router
   const router = useRouter();
 
+  //set formik
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -65,22 +73,27 @@ const FormRegister = () => {
     }),
     validateOnChange: false,
     onSubmit: async (value) => {
-      console.log("sadasd");
-
       setIsRegistering(true);
 
       const res = await axios({
         method: "post",
         data: { username: value.username, email: value.email },
         url: "/api/check",
+      }).catch((err) => {
+        console.log(err);
       });
 
-      console.log(res);
+      if (!res) {
+        setIsRegistering(false);
+        return;
+      }
 
       if (res.data.user) {
         if (res.data.email) {
+          // set if email exists
           formik.setErrors({ email: "Email already exists" });
         } else {
+          // set if username exists
           formik.setErrors({ username: "Username already exists" });
         }
 
@@ -89,7 +102,10 @@ const FormRegister = () => {
       }
 
       axios({ method: "post", data: value, url: "/api/register" })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          setIsRegistering(false);
+          console.log(err);
+        })
         .finally(() => {
           router.replace("login");
         });

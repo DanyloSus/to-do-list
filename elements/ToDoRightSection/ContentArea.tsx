@@ -1,45 +1,30 @@
-"use client";
-
+//internal import of CSS module's classes
 import classes from "@/app/to-do/to-do.module.css";
 
-import { Store } from "@/lib/redux/store";
+//import from libraries
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import { useSelector } from "react-redux";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 
+//type of ContentArea's props
 interface Props {
   id: string;
+  content: string;
   setContent: Dispatch<SetStateAction<string>>;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
 }
 
 const ContentArea = (props: Props) => {
-  const todos = useSelector((state: Store) => state.todos);
-  const [content, setContent] = useState<string | undefined>("");
-
-  useEffect(() => {
-    const todo = todos.find((todo) => todo._id === props.id);
-    setContent(todo?.content);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  //change content's value
   function changeContentHandler(e: ChangeEvent<HTMLTextAreaElement>) {
     props.setContent(e.target.value);
     props.setIsChanged(true);
-    setContent(e.target.value);
   }
 
   return (
     <TextareaAutosize
       placeholder="Content of your to-do"
       className={classes.ToDoBox_Content}
-      value={content}
+      value={props.content}
       onChange={changeContentHandler}
     />
   );

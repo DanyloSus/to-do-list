@@ -1,11 +1,15 @@
-import { connectMongoDB } from "@/lib/mongodb/mongodb";
-import User from "@/models/User";
+//import from libraries
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
-import { NextAuthTypes } from "@/types/types";
 
+//internal imports
+import { CredentialsType } from "@/types/types";
+import User from "@/models/User";
+import { connectMongoDB } from "@/lib/mongodb/mongodb";
+
+//create authentifications options
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -16,8 +20,7 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        const { username, password } =
-          credentials as NextAuthTypes.CredentialsType;
+        const { username, password } = credentials as CredentialsType;
         try {
           await connectMongoDB();
           const user = await User.findOne({ username });
@@ -26,15 +29,20 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
 
-          const checkedPassword = await bcrypt.compare(password, user.password);
+          if (!password) {
+            return null;
+          }
 
-          if (!checkedPassword) {
+          const hashedPassword = await bcrypt.compare(password, user.password);
+
+          if (!hashedPassword) {
             return null;
           }
 
           return user;
         } catch (error) {
           console.log(error);
+          throw new Error("Error " + error);
         }
       },
     }),
@@ -43,6 +51,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         return {
+          // write to session's token user's id and surname
           ...token,
           id: user.id,
           surname: user.surname,
@@ -51,6 +60,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
+      // write to session user's id and surname
       session.user.id = token.id;
       session.user.surname = token.surname;
       return session;

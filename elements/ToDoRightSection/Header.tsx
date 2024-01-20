@@ -1,38 +1,48 @@
-"use client";
-
+//internal import
 import { setToDos } from "@/lib/redux/todos/features/todosSlice";
+
+//import from libraries
+import axios from "axios";
+
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
-import axios from "axios";
+
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction } from "react";
-import { useDispatch } from "react-redux";
 
-interface Props {
+import { Dispatch, SetStateAction } from "react";
+
+import { useDispatch } from "react-redux";
+import { setToDosHandle } from "../TodoElements/TodoList";
+
+//type of Header's props
+type Props = {
   id: string;
   content: string;
   heading: string;
   isChanged: boolean;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
-}
+};
 
 const Header = (props: Props) => {
   const router = useRouter();
 
+  //get session
   const { data: session } = useSession();
 
   const dispatch = useDispatch();
 
+  //function for deleting
   function handleDelete() {
     axios.delete(`/api/todos?id=${props.id}`).finally(() => {
-      axios
-        .get(`/api/todos?attachedId=${session?.user.id}`)
-        .then((res) => dispatch(setToDos(res.data.toDos)))
-        .finally(() => router.push("/to-do"));
+      //set new ToDos
+      setToDosHandle(session?.user.id, dispatch).then(() => {
+        router.push("/to-do");
+      });
     });
   }
 
+  //function for updating
   function handleUpdate() {
     props.setIsChanged(false);
 
@@ -43,9 +53,7 @@ const Header = (props: Props) => {
         attachedId: session?.user.id,
       })
       .finally(() => {
-        axios
-          .get(`/api/todos?attachedId=${session?.user.id}`)
-          .then((res) => dispatch(setToDos(res.data.toDos)));
+        setToDosHandle(session?.user.id, dispatch);
       });
   }
 
@@ -68,7 +76,7 @@ const Header = (props: Props) => {
       >
         <path
           strokeLinecap="round"
-          stroke-linejoin="round"
+          strokeLinejoin="round"
           d="M6 18 18 6M6 6l12 12"
         />
       </svg>

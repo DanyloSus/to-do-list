@@ -1,21 +1,29 @@
+//useState needs client render
 "use client";
 
+//import from libraries
 import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
-import CustomTextField from "@/elements/Form/TextField";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
+//internal imports
 import { regExp } from "../register/form";
+import CustomTextField from "@/elements/Form/TextField";
 
 const FormLogin = () => {
+  //loading state
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState(false);
+
+  //get router
   const router = useRouter();
 
+  //set formik
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -47,11 +55,11 @@ const FormLogin = () => {
           username: value.username,
           password: value.password,
           redirect: false,
-        });
+        }).catch((err) => console.log(err));
 
         if (res?.error) {
-          console.log("error");
-          formik.setErrors({ username: true, password: true });
+          // if res has errors
+          formik.setErrors({ username: true, password: true }); // ignore this error because it works withou spacing)
           setError(true);
           setIsRegistering(false);
           return;
