@@ -9,8 +9,7 @@ import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
-const regExp = /^[a-zA-Z]$/;
+import { regExp } from "../register/form";
 
 const FormLogin = () => {
   const [isRegistering, setIsRegistering] = useState(false);

@@ -3,7 +3,8 @@ import User from "@/models/User";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions } from "next-auth";
+import { NextAuthTypes } from "@/types/types";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -15,10 +16,8 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        const { username, password } = credentials as {
-          username: string;
-          password: string;
-        };
+        const { username, password } =
+          credentials as NextAuthTypes.CredentialsType;
         try {
           await connectMongoDB();
           const user = await User.findOne({ username });

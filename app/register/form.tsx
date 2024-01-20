@@ -10,7 +10,7 @@ import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const regExp = /^[a-zA-Z]$/;
+export const regExp = /^[a-zA-Z]$/;
 
 const FormRegister = () => {
   const [isRegistering, setIsRegistering] = useState(false);

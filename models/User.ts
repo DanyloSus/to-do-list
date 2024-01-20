@@ -12,7 +12,6 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Email must be required"],
   },
   password: { type: String, required: [true, "Password must be required"] },
-  date: Date,
 });
 
 const User = mongoose.models.User || mongoose.model("User", UserSchema);

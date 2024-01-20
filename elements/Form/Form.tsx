@@ -1,14 +1,13 @@
+import { ChildrenType } from "@/types/types";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import grey from "@mui/material/colors/grey";
-import React, { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode;
   heading: String;
 };
 
-const Form = (props: Props) => {
+const Form = (props: Props & ChildrenType) => {
   return (
     <Box
       position="absolute"

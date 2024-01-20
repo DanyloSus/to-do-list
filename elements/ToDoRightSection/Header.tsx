@@ -6,16 +6,18 @@ import Box from "@mui/material/Box";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useDispatch } from "react-redux";
 
-const Header = (props: {
-  slug: string;
+interface Props {
+  id: string;
   content: string;
   heading: string;
   isChanged: boolean;
-  setIsChanged: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+  setIsChanged: Dispatch<SetStateAction<boolean>>;
+}
+
+const Header = (props: Props) => {
   const router = useRouter();
 
   const { data: session } = useSession();
@@ -23,7 +25,7 @@ const Header = (props: {
   const dispatch = useDispatch();
 
   function handleDelete() {
-    axios.delete(`/api/todos?id=${props.slug}`).finally(() => {
+    axios.delete(`/api/todos?id=${props.id}`).finally(() => {
       axios
         .get(`/api/todos?attachedId=${session?.user.id}`)
         .then((res) => dispatch(setToDos(res.data.toDos)))
@@ -35,7 +37,7 @@ const Header = (props: {
     props.setIsChanged(false);
 
     axios
-      .put(`/api/todos/${props.slug}`, {
+      .put(`/api/todos/${props.id}`, {
         newHeading: props.heading,
         newContent: props.content,
         attachedId: session?.user.id,

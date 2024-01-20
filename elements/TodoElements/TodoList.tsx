@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect, useReducer, useState } from "react";
+import { useEffect } from "react";
 import TodoElement from "./TodoElement";
 import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
 import grey from "@mui/material/colors/grey";
@@ -98,6 +98,3 @@ const TodoList = () => {
 };
 
 export default TodoList;
-function useCallback(arg0: () => void) {
-  throw new Error("Function not implemented.");
-}

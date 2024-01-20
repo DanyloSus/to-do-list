@@ -15,7 +15,7 @@ const TodoElement = (props: TodoInfo) => {
       onClick={() => router.push(`/to-do/${props._id}`)}
       className={classes.TodoBlock}
       sx={
-        params.slug === props._id
+        params.id === props._id
           ? { backgroundColor: `${grey[300]} !important` }
           : {}
       }
