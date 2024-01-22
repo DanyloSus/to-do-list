@@ -11,6 +11,7 @@ interface Props {
   content: string;
   setContent: Dispatch<SetStateAction<string>>;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
+  disabled: boolean;
 }
 
 const ContentArea = (props: Props) => {
@@ -26,6 +27,7 @@ const ContentArea = (props: Props) => {
       className={classes.ToDoBox_Content}
       value={props.content}
       onChange={changeContentHandler}
+      disabled={props.disabled}
     />
   );
 };

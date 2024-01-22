@@ -3,18 +3,24 @@ import TodoElement from "./TodoElement";
 import { setToDos } from "@/lib/redux/todos/features/todosSlice";
 import { Store } from "@/lib/redux/store";
 import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
+import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/disabledSlice";
 
 //import from libraries
-import { useEffect } from "react";
-import { Box, Typography } from "@mui/material";
+import { SetStateAction, Dispatch, useEffect, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import grey from "@mui/material/colors/grey";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "@reduxjs/toolkit";
+import { Dispatch as DispatchRedux } from "@reduxjs/toolkit";
+import { Session } from "next-auth";
+import { setError } from "@/lib/redux/error/features/errorSlice";
 
 //export Promise for getting ToDo list
-export const setToDosHandle = (id: string | undefined, dispatch: Dispatch) => {
+export const setToDosHandle = (
+  id: string | undefined,
+  dispatch: DispatchRedux
+) => {
   return new Promise((resolve, reject) => {
     axios
       .get(`/api/todos?attachedId=${id}`) // get values by user id
@@ -23,89 +29,145 @@ export const setToDosHandle = (id: string | undefined, dispatch: Dispatch) => {
         resolve(res.data.toDos); // Resolve with the data you fetched
       })
       .catch((error) => {
+        dispatch(setError(true));
         reject(error); // Reject with the error if any
       });
   });
 };
 
-const TodoList = () => {
+type Props = {
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  session: Session | null;
+  loading: boolean;
+};
+
+const TodoList = (props: Props) => {
+  const [loading, setLoading] = useState(false);
+
+  const disabled = useSelector((state: Store) => state.disbled);
+  const error = useSelector((state: Store) => state.error);
+
   // get values of user's toDos
   const todos = useSelector((state: Store) => state.todos);
   // get session values
-  const { data: session } = useSession();
   const dispatch = useDispatch();
+
+  const setDisabled = (state: boolean) => {
+    dispatch(setDisabledRedux(state));
+  };
 
   useEffect(() => {
     // get values of user's toDos
-    setToDosHandle(session?.user.id, dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+    setLoading(true);
+    setToDosHandle(props.session?.user.id, dispatch).finally(() =>
+      setLoading(false)
+    );
 
+    console.log("Sus");
+    if (props.session?.user.id) {
+      props.setLoading(false);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.session]);
   // function for creating new ToDo
   function createTodoHandler() {
-    axios
-      .post("/api/todos", {
-        heading: "",
-        content: "",
-        attachedId: session?.user.id,
-      }) // create empty ToDo
-      .finally(() => setToDosHandle(session?.user.id, dispatch)); // get new values
+    setDisabled(true);
+    axios.post("/api/todos", {
+      heading: "",
+      content: "",
+      attachedId: props.session?.user.id,
+    }); // create empty ToDo
+    setToDosHandle(props.session?.user.id, dispatch).finally(() =>
+      setDisabled(false)
+    ); // get new values
   }
 
   return (
-    <Box
-      width="365px"
-      height="100vh"
-      border={`1px solid ${grey[300]}`}
-      display="flex"
-      flexDirection="column"
-      position="fixed"
-      left="0px"
-      top="0px"
-    >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        px={1}
-        py={1}
-        alignItems="center"
-      >
-        <Box>
-          <Typography
-            component="h2"
-            variant="h4"
-            sx={{ cursor: "pointer" }}
-            onClick={() => signOut()}
-          >
-            {session?.user?.name}
-          </Typography>
-        </Box>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          onClick={createTodoHandler}
+    <>
+      {props.loading ? (
+        <></>
+      ) : (
+        <Box
+          maxWidth="365px"
+          width="100%"
+          height="100%"
+          maxHeight="100vh"
+          border={`1px solid ${grey[300]}`}
+          display="flex"
+          flexDirection="column"
+          position="fixed"
+          left="0px"
+          top="0px"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 4.5v15m7.5-7.5h-15"
-          />
-        </svg>
-      </Box>
-      {session?.user &&
-        // render ToDo things
-        todos.map((todo: TodoInfo) => (
-          <TodoElement
-            heading={todo.heading}
-            content={todo.content}
-            _id={todo._id}
-            key={todo._id}
-          />
-        ))}
-    </Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            px={1}
+            py={1}
+            alignItems="center"
+            height="3rem"
+            overflow="hidden"
+          >
+            <Box>
+              <Button
+                disabled={disabled}
+                onClick={() => {
+                  setDisabled(true);
+                  signOut();
+                }}
+              >
+                <Typography
+                  component="h2"
+                  variant="h4"
+                  sx={{ cursor: "pointer" }}
+                >
+                  {props.session?.user?.name}
+                </Typography>
+              </Button>
+            </Box>
+            <Button disabled={disabled} onClick={createTodoHandler}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+            </Button>
+          </Box>
+          <Box height="100%" overflow="hidden auto">
+            {!error && loading ? (
+              <>Loading...</>
+            ) : props.session?.user ? (
+              // render ToDo things
+              todos.map((todo: TodoInfo) => (
+                <TodoElement
+                  heading={todo.heading}
+                  content={todo.content}
+                  attachedId={todo.attachedId}
+                  _id={todo._id}
+                  key={todo._id}
+                  disabled={disabled}
+                  setDisabled={setDisabled}
+                />
+              ))
+            ) : null}{" "}
+            {error && (
+              <Typography color="error" component="h6">
+                Something went wrong ;(
+              </Typography>
+            )}
+          </Box>
+        </Box>
+      )}
+    </>
   );
 };
 

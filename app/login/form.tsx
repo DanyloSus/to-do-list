@@ -18,7 +18,7 @@ import CustomTextField from "@/elements/Form/TextField";
 const FormLogin = () => {
   //loading state
   const [isRegistering, setIsRegistering] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
 
   //get router
   const router = useRouter();
@@ -50,26 +50,27 @@ const FormLogin = () => {
     validateOnChange: false,
     onSubmit: async (value) => {
       setIsRegistering(true);
-      try {
-        const res = await signIn("credentials", {
-          username: value.username,
-          password: value.password,
-          redirect: false,
-        }).catch((err) => console.log(err));
+      const res = await signIn("credentials", {
+        username: value.username,
+        password: value.password,
+        redirect: false,
+      }).catch((err) => console.log(err));
 
-        if (res?.error) {
-          // if res has errors
-          formik.setErrors({ username: true, password: true }); // ignore this error because it works withou spacing)
-          setError(true);
-          setIsRegistering(false);
-          return;
-        }
-
-        router.replace("to-do");
-      } catch (error) {
-        console.log(error);
+      if (res?.status !== 401 && !res?.ok) {
+        // if res has errors
+        setError("Something went wrong ;(");
         setIsRegistering(false);
+        return;
       }
+
+      if (res?.status === 401) {
+        formik.setErrors({ username: true, password: true }); // ignore this error because it works withou spacing)
+        setError("Username or password is wrong!");
+        setIsRegistering(false);
+        return;
+      }
+
+      router.replace("to-do");
     },
   });
 
@@ -102,7 +103,7 @@ const FormLogin = () => {
         />
         {error ? (
           <Typography component="p" my={-1} color="error">
-            Username or password is uncorrect!
+            {error}
           </Typography>
         ) : null}
         <Box

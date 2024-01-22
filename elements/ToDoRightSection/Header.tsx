@@ -1,5 +1,5 @@
 //internal import
-import { setToDos } from "@/lib/redux/todos/features/todosSlice";
+import { setToDosHandle } from "../TodoElements/TodoList";
 
 //import from libraries
 import axios from "axios";
@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 
 import { useDispatch } from "react-redux";
-import { setToDosHandle } from "../TodoElements/TodoList";
 
 //type of Header's props
 type Props = {
@@ -22,6 +21,8 @@ type Props = {
   heading: string;
   isChanged: boolean;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
+  disabled: boolean;
+  setDisabled: (state: boolean) => void;
 };
 
 const Header = (props: Props) => {
@@ -34,9 +35,11 @@ const Header = (props: Props) => {
 
   //function for deleting
   function handleDelete() {
+    props.setDisabled(true);
     axios.delete(`/api/todos?id=${props.id}`).finally(() => {
       //set new ToDos
       setToDosHandle(session?.user.id, dispatch).then(() => {
+        props.setDisabled(false);
         router.push("/to-do");
       });
     });
@@ -45,6 +48,7 @@ const Header = (props: Props) => {
   //function for updating
   function handleUpdate() {
     props.setIsChanged(false);
+    props.setDisabled(true);
 
     axios
       .put(`/api/todos/${props.id}`, {
@@ -54,6 +58,7 @@ const Header = (props: Props) => {
       })
       .finally(() => {
         setToDosHandle(session?.user.id, dispatch);
+        props.setDisabled(false);
       });
   }
 
@@ -61,25 +66,26 @@ const Header = (props: Props) => {
     <Box display="flex" alignItems="center" justifyContent="end" gap={2}>
       <Button
         variant="contained"
-        disabled={!props.isChanged}
+        disabled={props.disabled || !props.isChanged}
         onClick={handleUpdate}
       >
         Submit
       </Button>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="1.5"
-        stroke="currentColor"
-        onClick={handleDelete}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M6 18 18 6M6 6l12 12"
-        />
-      </svg>
+      <Button onClick={handleDelete} disabled={props.disabled}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </Button>
     </Box>
   );
 };

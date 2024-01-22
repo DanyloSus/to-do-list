@@ -2,11 +2,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 //internal import
 import todosSlice from "./todos/features/todosSlice";
+import disabledSlice from "./disabled/features/disabledSlice";
+import errorSlice from "./error/features/errorSlice";
 
 //create store
 const store = configureStore({
   reducer: {
     todos: todosSlice,
+    disbled: disabledSlice,
+    error: errorSlice,
   },
 });
 

@@ -5,6 +5,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 export type TodoInfo = {
   heading: string;
   content: string;
+  attachedId: string;
   _id: string;
 };
 

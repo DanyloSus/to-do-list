@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ export const regExp = /^[a-zA-Z]$/;
 const FormRegister = () => {
   //loading state
   const [isRegistering, setIsRegistering] = useState(false);
+  const [error, setError] = useState("");
 
   //get router
   const router = useRouter();
@@ -79,9 +80,13 @@ const FormRegister = () => {
         method: "post",
         data: { username: value.username, email: value.email },
         url: "/api/check",
-      }).catch((err) => {
-        console.log(err);
+      }).catch(() => {
+        setIsRegistering(false);
+        setError("Something went wrong ;(");
+        return;
       });
+
+      setError("");
 
       if (!res) {
         setIsRegistering(false);
@@ -102,12 +107,13 @@ const FormRegister = () => {
       }
 
       axios({ method: "post", data: value, url: "/api/register" })
-        .catch((err) => {
-          setIsRegistering(false);
-          console.log(err);
-        })
-        .finally(() => {
+        .then((res) => {
           router.replace("login");
+        })
+        .catch(() => {
+          setIsRegistering(false);
+          setError("Something went wrong ;(");
+          return;
         });
     },
   });
@@ -179,6 +185,11 @@ const FormRegister = () => {
           type="password"
           name="password"
         />
+        {error ? (
+          <Typography color="error" component="h6">
+            {error}
+          </Typography>
+        ) : null}
         <Box
           display="flex"
           gap={3}
