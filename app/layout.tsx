@@ -15,7 +15,9 @@ export default function RootLayout({ children }: ChildrenType) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <ThemeProviderElement>
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeProviderElement>
       </body>
     </html>
   );

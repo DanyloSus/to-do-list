@@ -1,10 +1,18 @@
 //internal imports
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 //import from libraries
 import { Box, Button, Typography } from "@mui/material";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-const MainPage = () => {
+const MainPage = async () => {
+  //get session
+  const session = await getServerSession(authOptions);
+
+  if (session) redirect("/to-do"); // if user is signed, then redirect them to to-do list page but deleting in history /register
+
   return (
     <Box
       display="flex"
