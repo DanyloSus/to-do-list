@@ -72,6 +72,7 @@ const Page = ({ params }: ParamsIdType) => {
         setIsChanged={setIsChanged}
         setHeading={setHeading}
         disabled={disabled}
+        status={status}
       />
       <hr />
       <ContentArea
@@ -80,6 +81,7 @@ const Page = ({ params }: ParamsIdType) => {
         setIsChanged={setIsChanged}
         setContent={setContent}
         disabled={disabled}
+        status={status}
       />
     </Box>
   ) : (

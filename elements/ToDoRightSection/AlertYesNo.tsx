@@ -11,15 +11,17 @@ type Props = {
   handleClose: () => void;
   handleDo: () => void;
   isOpen: boolean;
+  title: string;
+  content: string;
 };
 
 const AlertDeleting = (props: Props) => {
   return (
     <Dialog open={props.isOpen} onClose={props.handleClose}>
-      <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+      <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          If you delete this ToDo, you never come back to its again
+          {props.content}
         </DialogContentText>
       </DialogContent>
       <DialogActions>

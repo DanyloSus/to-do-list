@@ -12,6 +12,7 @@ type Props = {
   setHeading: Dispatch<SetStateAction<string>>;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
   disabled: boolean;
+  status: string;
 };
 
 const HeadingArea = (props: Props) => {
@@ -27,7 +28,11 @@ const HeadingArea = (props: Props) => {
       className={classes.ToDoBox_Heading}
       value={props.heading}
       onChange={changeHeadingHandler}
-      disabled={props.disabled}
+      disabled={
+        props.disabled ||
+        props.status === "completed" ||
+        props.status === "deleted"
+      }
     />
   );
 };
