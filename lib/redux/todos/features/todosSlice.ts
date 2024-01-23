@@ -6,6 +6,7 @@ export type TodoInfo = {
   heading: string;
   content: string;
   attachedId: string;
+  status: string;
   _id: string;
 };
 

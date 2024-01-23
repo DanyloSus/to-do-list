@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const data = await req.json(); // get values
-  const { heading, content, attachedId } = data; // destructuring
+  const { heading, content, attachedId, status } = data; // destructuring
   try {
     await connectMongoDB(); // connect db
-    await ToDo.create({ heading, content, attachedId }); // create ToDo
+    await ToDo.create({ heading, content, attachedId, status }); // create ToDo
     return NextResponse.json({ message: "ToDo is created" }, { status: 201 });
   } catch (error) {
     console.log("Didn't create ToDo");

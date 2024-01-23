@@ -23,6 +23,13 @@ button {
   border-radius: 1.5rem !important;
 }
 
+.MuiButtonGroup-root {
+  width: 100%;
+  & > .MuiButtonBase-root {
+    border-radius: 0 !important;
+    width: 100%;
+  }
+}
 svg {
   width: 3rem;
   height: 3rem;

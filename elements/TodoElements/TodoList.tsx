@@ -7,7 +7,7 @@ import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/d
 
 //import from libraries
 import { SetStateAction, Dispatch, useEffect, useState } from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Typography } from "@mui/material";
 import grey from "@mui/material/colors/grey";
 import { signOut } from "next-auth/react";
 import axios from "axios";
@@ -15,6 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch as DispatchRedux } from "@reduxjs/toolkit";
 import { Session } from "next-auth";
 import { setError } from "@/lib/redux/error/features/errorSlice";
+import Link from "next/link";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 
 //export Promise for getting ToDo list
 export const setToDosHandle = (
@@ -46,11 +53,14 @@ const TodoList = (props: Props) => {
 
   const disabled = useSelector((state: Store) => state.disbled);
   const error = useSelector((state: Store) => state.error);
-
-  // get values of user's toDos
   const todos = useSelector((state: Store) => state.todos);
   // get session values
   const dispatch = useDispatch();
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const params = useParams();
 
   const setDisabled = (state: boolean) => {
     dispatch(setDisabledRedux(state));
@@ -63,7 +73,6 @@ const TodoList = (props: Props) => {
       setLoading(false)
     );
 
-    console.log("Sus");
     if (props.session?.user.id) {
       props.setLoading(false);
     }
@@ -77,6 +86,7 @@ const TodoList = (props: Props) => {
       heading: "",
       content: "",
       attachedId: props.session?.user.id,
+      status: "active",
     }); // create empty ToDo
     setToDosHandle(props.session?.user.id, dispatch).finally(() =>
       setDisabled(false)
@@ -100,16 +110,16 @@ const TodoList = (props: Props) => {
           left="0px"
           top="0px"
         >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            px={1}
-            py={1}
-            alignItems="center"
-            height="3rem"
-            overflow="hidden"
-          >
-            <Box>
+          <Box>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              px={1}
+              py={1}
+              alignItems="center"
+              height="3rem"
+              overflow="hidden"
+            >
               <Button
                 disabled={disabled}
                 onClick={() => {
@@ -125,39 +135,112 @@ const TodoList = (props: Props) => {
                   {props.session?.user?.name}
                 </Typography>
               </Button>
+              <Button disabled={disabled} onClick={createTodoHandler}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+              </Button>
             </Box>
-            <Button disabled={disabled} onClick={createTodoHandler}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
+            <ButtonGroup
+              variant="text"
+              aria-label="outlined button group"
+              disabled={disabled}
+            >
+              <Button
+                onClick={() => router.push(`${pathname}?filter=active`)}
+                sx={
+                  searchParams.get("filter") === "completed" ||
+                  searchParams.get("filter") === "deleted"
+                    ? {}
+                    : {
+                        backgroundColor: grey[300],
+                      }
+                }
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-            </Button>
+                Active
+              </Button>
+              <Button
+                onClick={() => router.push(`${pathname}?filter=completed`)}
+                sx={
+                  searchParams.get("filter") === "completed"
+                    ? {
+                        backgroundColor: grey[300],
+                      }
+                    : {}
+                }
+              >
+                Completed
+              </Button>
+              <Button
+                onClick={() => router.push(`${pathname}?filter=deleted`)}
+                sx={
+                  searchParams.get("filter") === "deleted"
+                    ? {
+                        backgroundColor: grey[300],
+                      }
+                    : {}
+                }
+              >
+                Deleted
+              </Button>
+            </ButtonGroup>
           </Box>
           <Box height="100%" overflow="hidden auto">
             {!error && loading ? (
               <>Loading...</>
             ) : props.session?.user ? (
               // render ToDo things
-              todos.map((todo: TodoInfo) => (
-                <TodoElement
-                  heading={todo.heading}
-                  content={todo.content}
-                  attachedId={todo.attachedId}
-                  _id={todo._id}
-                  key={todo._id}
-                  disabled={disabled}
-                  setDisabled={setDisabled}
-                />
-              ))
+              todos.map((todo: TodoInfo) => {
+                if (
+                  !searchParams.get("filter") &&
+                  (!todo.status || "active" === todo.status)
+                ) {
+                  return (
+                    <TodoElement
+                      heading={todo.heading}
+                      content={todo.content}
+                      attachedId={todo.attachedId}
+                      status={todo.status}
+                      _id={todo._id}
+                      key={todo._id}
+                      disabled={disabled}
+                      setDisabled={setDisabled}
+                      router={router}
+                      params={params}
+                      searchParams={searchParams}
+                    />
+                  );
+                } else if (
+                  (!todo.status && searchParams.get("filter") === "active") ||
+                  todo.status === searchParams.get("filter")
+                ) {
+                  return (
+                    <TodoElement
+                      heading={todo.heading}
+                      content={todo.content}
+                      attachedId={todo.attachedId}
+                      status={todo.status}
+                      _id={todo._id}
+                      key={todo._id}
+                      disabled={disabled}
+                      setDisabled={setDisabled}
+                      router={router}
+                      params={params}
+                      searchParams={searchParams}
+                    />
+                  );
+                }
+              })
             ) : null}{" "}
             {error && (
               <Typography color="error" component="h6">

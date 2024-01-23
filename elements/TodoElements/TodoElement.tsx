@@ -5,29 +5,35 @@ import classes from "./TodoElement.module.css";
 //import from libraries
 import { Button, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { useParams, useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import { ReadonlyURLSearchParams } from "next/navigation";
 
 type Props = {
   disabled: boolean;
   setDisabled: (state: boolean) => void;
+  router: AppRouterInstance;
+  params: Params;
+  searchParams: ReadonlyURLSearchParams;
 };
 
 const TodoElement = (props: TodoInfo & Props) => {
-  // get router
-  const router = useRouter();
-  // get params
-  const params = useParams();
-
   return (
     <Button
       onClick={() => {
         props.setDisabled(true);
-        router.push(`/to-do/${props._id}`);
+        props.router.push(
+          `/to-do/${props._id}${
+            props.searchParams.get("filter")
+              ? `?filter=${props.searchParams.get("filter")}`
+              : ""
+          }`
+        );
         props.setDisabled(false);
       }}
       className={classes.TodoBlock}
       sx={
-        params.id === props._id
+        props.params.id === props._id
           ? {
               backgroundColor: `${grey[300]} !important`,
             }
