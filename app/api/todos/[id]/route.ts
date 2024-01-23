@@ -9,11 +9,16 @@ import { ParamsIdType } from "@/types/types";
 export async function PUT(req: NextRequest, { params }: ParamsIdType) {
   const { id } = params; // get params
   const data = await req.json(); // get values
-  const { newHeading: heading, newContent: content, attachedId } = data; // destructuring
+  const {
+    newHeading: heading,
+    newContent: content,
+    attachedId,
+    newStatus: status,
+  } = data; // destructuring
 
   try {
     await connectMongoDB(); // connect db
-    await ToDo.findByIdAndUpdate(id, { heading, content, attachedId }); // update user's info
+    await ToDo.findByIdAndUpdate(id, { heading, content, attachedId, status }); // update user's info
     return NextResponse.json({ message: "ToDo is updated" }, { status: 201 });
   } catch (error) {
     console.log("User didn't update");

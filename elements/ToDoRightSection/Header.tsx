@@ -10,15 +10,17 @@ import Box from "@mui/material/Box";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { useDispatch } from "react-redux";
+import AlertDeleting from "./AlertDeleting";
 
 //type of Header's props
 type Props = {
   id: string;
   content: string;
   heading: string;
+  status: string;
   isChanged: boolean;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
   disabled: boolean;
@@ -26,7 +28,11 @@ type Props = {
 };
 
 const Header = (props: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
+
+  console.log(props.status);
 
   //get session
   const { data: session } = useSession();
@@ -39,14 +45,14 @@ const Header = (props: Props) => {
     axios.delete(`/api/todos?id=${props.id}`).finally(() => {
       //set new ToDos
       setToDosHandle(session?.user.id, dispatch).then(() => {
-        props.setDisabled(false);
         router.push("/to-do");
+        props.setDisabled(false);
       });
     });
   }
 
   //function for updating
-  function handleUpdate() {
+  function handleUpdate(status = props.status) {
     props.setIsChanged(false);
     props.setDisabled(true);
 
@@ -55,10 +61,15 @@ const Header = (props: Props) => {
         newHeading: props.heading,
         newContent: props.content,
         attachedId: session?.user.id,
+        newStatus: status,
       })
       .finally(() => {
-        setToDosHandle(session?.user.id, dispatch);
-        props.setDisabled(false);
+        setToDosHandle(session?.user.id, dispatch).finally(() => {
+          if (status === "deleted") {
+            router.push("/to-do?filter=deleted");
+          }
+          props.setDisabled(false);
+        });
       });
   }
 
@@ -67,25 +78,53 @@ const Header = (props: Props) => {
       <Button
         variant="contained"
         disabled={props.disabled || !props.isChanged}
-        onClick={handleUpdate}
+        onClick={() => handleUpdate()}
       >
         Submit
       </Button>
-      <Button onClick={handleDelete} disabled={props.disabled}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18 18 6M6 6l12 12"
+      {props.status == "deleted" ? (
+        <>
+          <Button onClick={() => setIsOpen(true)} disabled={props.disabled}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </Button>
+          <AlertDeleting
+            isOpen={isOpen}
+            handleClose={() => setIsOpen(false)}
+            handleDo={handleDelete}
           />
-        </svg>
-      </Button>
+        </>
+      ) : (
+        <Button
+          onClick={() => handleUpdate("deleted")}
+          disabled={props.disabled}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
+        </Button>
+      )}
     </Box>
   );
 };

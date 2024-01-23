@@ -21,6 +21,7 @@ const Page = ({ params }: ParamsIdType) => {
   const [isChanged, setIsChanged] = useState(false);
   const [heading, setHeading] = useState("");
   const [content, setContent] = useState("");
+  const [status, setStatus] = useState("");
   const [hasUser, setHasUser] = useState<null | boolean>(null);
 
   const { data: session } = useSession();
@@ -37,6 +38,7 @@ const Page = ({ params }: ParamsIdType) => {
       //set content of todo
       setHeading(todo?.heading || "");
       setContent(todo?.content || "");
+      setStatus(todo?.status || "active");
       setHasUser(true);
     } else {
       setHasUser(false);
@@ -61,6 +63,7 @@ const Page = ({ params }: ParamsIdType) => {
         setIsChanged={setIsChanged}
         disabled={disabled}
         setDisabled={setDisabled}
+        status={status}
       />
       <hr />
       <HeadingArea

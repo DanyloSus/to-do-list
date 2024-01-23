@@ -202,25 +202,8 @@ const TodoList = (props: Props) => {
               // render ToDo things
               todos.map((todo: TodoInfo) => {
                 if (
-                  !searchParams.get("filter") &&
-                  (!todo.status || "active" === todo.status)
-                ) {
-                  return (
-                    <TodoElement
-                      heading={todo.heading}
-                      content={todo.content}
-                      attachedId={todo.attachedId}
-                      status={todo.status}
-                      _id={todo._id}
-                      key={todo._id}
-                      disabled={disabled}
-                      setDisabled={setDisabled}
-                      router={router}
-                      params={params}
-                      searchParams={searchParams}
-                    />
-                  );
-                } else if (
+                  (!searchParams.get("filter") &&
+                    (!todo.status || "active" === todo.status)) ||
                   (!todo.status && searchParams.get("filter") === "active") ||
                   todo.status === searchParams.get("filter")
                 ) {
