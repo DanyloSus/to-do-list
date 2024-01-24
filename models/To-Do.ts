@@ -7,6 +7,7 @@ export const ToDoSchema = new mongoose.Schema({
   content: String,
   attachedId: String,
   status: String,
+  dateTime: Date,
 });
 
 //create ToDo model

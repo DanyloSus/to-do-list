@@ -13,12 +13,19 @@ export async function PUT(req: NextRequest, { params }: ParamsIdType) {
     newHeading: heading,
     newContent: content,
     attachedId,
+    newDateTime: dateTime,
     newStatus: status,
   } = data; // destructuring
 
   try {
     await connectMongoDB(); // connect db
-    await ToDo.findByIdAndUpdate(id, { heading, content, attachedId, status }); // update user's info
+    await ToDo.findByIdAndUpdate(id, {
+      heading,
+      content,
+      attachedId,
+      status,
+      dateTime,
+    }); // update user's info
     return NextResponse.json({ message: "ToDo is updated" }, { status: 201 });
   } catch (error) {
     console.log("User didn't update");

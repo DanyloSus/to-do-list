@@ -7,6 +7,7 @@ export type TodoInfo = {
   content: string;
   attachedId: string;
   status: string;
+  dateTime: Date;
   _id: string;
 };
 

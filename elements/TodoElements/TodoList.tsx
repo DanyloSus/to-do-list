@@ -82,15 +82,18 @@ const TodoList = (props: Props) => {
   // function for creating new ToDo
   function createTodoHandler() {
     setDisabled(true);
-    axios.post("/api/todos", {
-      heading: "",
-      content: "",
-      attachedId: props.session?.user.id,
-      status: "active",
-    }); // create empty ToDo
-    setToDosHandle(props.session?.user.id, dispatch).finally(() =>
-      setDisabled(false)
-    ); // get new values
+    axios
+      .post("/api/todos", {
+        heading: "",
+        content: "",
+        attachedId: props.session?.user.id,
+        status: "active",
+      })
+      .finally(() => {
+        setToDosHandle(props.session?.user.id, dispatch).finally(() =>
+          setDisabled(false)
+        );
+      });
   }
 
   return (
@@ -220,6 +223,7 @@ const TodoList = (props: Props) => {
                       router={router}
                       params={params}
                       searchParams={searchParams}
+                      dateTime={todo.dateTime}
                     />
                   );
                 }
