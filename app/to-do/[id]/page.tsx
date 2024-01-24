@@ -19,6 +19,7 @@ import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/d
 import { setToDosHandle } from "@/elements/TodoElements/TodoList";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Loading from "@/elements/Form/Loading";
 
 const Page = ({ params }: ParamsIdType) => {
   //state for checking is toDo thing was changed
@@ -150,6 +151,7 @@ const Page = ({ params }: ParamsIdType) => {
         disabled={disabled}
         status={status}
       />
+      {disabled ? <Loading /> : null}
     </Box>
   ) : (
     // eslint-disable-next-line react/no-unescaped-entities

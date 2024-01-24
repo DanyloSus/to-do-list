@@ -6,13 +6,14 @@ import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 //internal imports
 import CustomTextField from "@/elements/Form/TextField";
+import Loading from "@/elements/Form/Loading";
 
 //regular expretion for check is latin
 export const regExp = /^[a-zA-Z]$/;
@@ -209,6 +210,7 @@ const FormRegister = () => {
             </Link>
           </Box>
           <Button variant="contained" type="submit" disabled={isRegistering}>
+            {isRegistering ? <Loading /> : null}
             Register
           </Button>
         </Box>

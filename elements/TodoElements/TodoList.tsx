@@ -22,6 +22,7 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
+import Loading from "../Form/Loading";
 
 //export Promise for getting ToDo list
 export const setToDosHandle = (
@@ -200,7 +201,7 @@ const TodoList = (props: Props) => {
           </Box>
           <Box height="100%" overflow="hidden auto">
             {!error && loading ? (
-              <>Loading...</>
+              <Loading />
             ) : props.session?.user ? (
               // render ToDo things
               todos.map((todo: TodoInfo) => {

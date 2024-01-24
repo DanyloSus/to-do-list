@@ -14,10 +14,11 @@ import { useRouter } from "next/navigation";
 //internal imports
 import { regExp } from "../register/form";
 import CustomTextField from "@/elements/Form/TextField";
+import Loading from "@/elements/Form/Loading";
 
 const FormLogin = () => {
   //loading state
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [isSigning, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
 
   //get router
@@ -88,7 +89,7 @@ const FormLogin = () => {
           required
           type="text"
           name="username"
-          disabled={isRegistering}
+          disabled={isSigning}
         />
         <CustomTextField
           label="Password"
@@ -99,7 +100,7 @@ const FormLogin = () => {
           required
           type="password"
           name="password"
-          disabled={isRegistering}
+          disabled={isSigning}
         />
         {error ? (
           <Typography component="p" my={-1} color="error">
@@ -114,17 +115,18 @@ const FormLogin = () => {
         >
           <Box display="flex" gap={3}>
             <Link href="/to-do">
-              <Button variant="text" disabled={isRegistering}>
+              <Button variant="text" disabled={isSigning}>
                 Guest
               </Button>
             </Link>
             <Link href="/register">
-              <Button variant="outlined" disabled={isRegistering}>
+              <Button variant="outlined" disabled={isSigning}>
                 Register
               </Button>
             </Link>
           </Box>
-          <Button variant="contained" type="submit" disabled={isRegistering}>
+          <Button variant="contained" type="submit" disabled={isSigning}>
+            {isSigning ? <Loading /> : null}
             Login
           </Button>
         </Box>
