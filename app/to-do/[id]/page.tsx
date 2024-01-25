@@ -29,6 +29,7 @@ const Page = ({ params }: ParamsIdType) => {
   const [status, setStatus] = useState("");
   const [hasUser, setHasUser] = useState<null | boolean>(null);
   const [dateTime, setDateTime] = useState<Date | null>();
+  const [isViewMode, setIsViewMode] = useState(false);
 
   const { data: session } = useSession();
 
@@ -132,6 +133,8 @@ const Page = ({ params }: ParamsIdType) => {
         dateTime={dateTime}
         handleDelete={handleDelete}
         handleUpdate={handleUpdate}
+        isViewMode={isViewMode}
+        setIsViewMode={setIsViewMode}
       />
       <hr />
       <HeadingArea

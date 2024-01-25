@@ -1,11 +1,12 @@
 //import from libraries
-import { Button } from "@mui/material";
+import { Button, FormControlLabel } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { Dispatch, SetStateAction, useState } from "react";
 
 import AlertDeleting from "./AlertYesNo";
 import SettingsAlert from "./SettingAlert";
+import SwitchCustom from "./Switch";
 
 //type of Header's props
 type Props = {
@@ -21,6 +22,8 @@ type Props = {
   dateTime: Date | null | undefined;
   handleDelete: () => void;
   handleUpdate: (newStatus?: string) => void;
+  isViewMode: boolean;
+  setIsViewMode: Dispatch<SetStateAction<boolean>>;
 };
 
 const Header = (props: Props) => {
@@ -29,6 +32,16 @@ const Header = (props: Props) => {
 
   return (
     <Box display="flex" alignItems="center" justifyContent="end" gap={2}>
+      <FormControlLabel
+        control={
+          <SwitchCustom
+            value={props.isViewMode}
+            onChange={() => props.setIsViewMode((value) => !value)}
+          />
+        }
+        label="Mode"
+        labelPlacement="start"
+      />
       {props.status === "deleted" || props.status === "completed" ? (
         <>
           <Button
