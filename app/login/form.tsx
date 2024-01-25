@@ -126,9 +126,9 @@ const FormLogin = () => {
             </Link>
           </Box>
           <Button variant="contained" type="submit" disabled={isSigning}>
-            {isSigning ? <Loading /> : null}
             Login
           </Button>
+          {isSigning ? <Loading /> : null}
         </Box>
       </FormControl>
     </form>

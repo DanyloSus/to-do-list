@@ -210,9 +210,9 @@ const FormRegister = () => {
             </Link>
           </Box>
           <Button variant="contained" type="submit" disabled={isRegistering}>
-            {isRegistering ? <Loading /> : null}
             Register
           </Button>
+            {isRegistering ? <Loading /> : null}
         </Box>
       </FormControl>
     </form>
