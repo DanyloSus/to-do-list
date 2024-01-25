@@ -45,3 +45,12 @@ svg {
     scale: 1.1;
   }
 }
+
+body .w-md-editor-text-pre > code,
+body .w-md-editor-text-input {
+  font-size: 1.5rem !important;
+  line-height: 24px !important;
+}
+.w-md-editor-bar {
+  display: none;
+}

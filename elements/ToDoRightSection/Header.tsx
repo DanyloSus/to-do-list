@@ -23,7 +23,7 @@ type Props = {
   handleDelete: () => void;
   handleUpdate: (newStatus?: string) => void;
   isViewMode: boolean;
-  setIsViewMode: Dispatch<SetStateAction<boolean>>;
+  handleChangeMode: () => void;
 };
 
 const Header = (props: Props) => {
@@ -32,16 +32,6 @@ const Header = (props: Props) => {
 
   return (
     <Box display="flex" alignItems="center" justifyContent="end" gap={2}>
-      <FormControlLabel
-        control={
-          <SwitchCustom
-            value={props.isViewMode}
-            onChange={() => props.setIsViewMode((value) => !value)}
-          />
-        }
-        label="Mode"
-        labelPlacement="start"
-      />
       {props.status === "deleted" || props.status === "completed" ? (
         <>
           <Button
@@ -88,6 +78,16 @@ const Header = (props: Props) => {
         </>
       ) : (
         <>
+          <FormControlLabel
+            control={
+              <SwitchCustom
+                value={props.isViewMode}
+                onChange={props.handleChangeMode}
+              />
+            }
+            label="Mode"
+            labelPlacement="start"
+          />
           <Button
             variant="contained"
             disabled={

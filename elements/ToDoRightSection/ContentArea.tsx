@@ -2,8 +2,8 @@
 import classes from "@/app/to-do/to-do.module.css";
 
 //import from libraries
-import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import MDEditor from "@uiw/react-md-editor";
 
 //type of ContentArea's props
 interface Props {
@@ -17,22 +17,25 @@ interface Props {
 
 const ContentArea = (props: Props) => {
   //change content's value
-  function changeContentHandler(e: ChangeEvent<HTMLTextAreaElement>) {
-    props.setContent(e.target.value);
+  function changeContentHandler(value?: string | undefined) {
+    props.setContent(value ? value : "");
     props.setIsChanged(true);
   }
 
-  return (
-    <TextareaAutosize
-      placeholder="Content of your to-do"
+  return props.disabled ||
+    props.status === "completed" ||
+    props.status === "deleted" ? (
+    <MDEditor.Markdown
+      source={props.content}
+      className={classes.ToDoBox_Content}
+    />
+  ) : (
+    <MDEditor
       className={classes.ToDoBox_Content}
       value={props.content}
       onChange={changeContentHandler}
-      disabled={
-        props.disabled ||
-        props.status === "completed" ||
-        props.status === "deleted"
-      }
+      extraCommands={[]}
+      preview="edit"
     />
   );
 };

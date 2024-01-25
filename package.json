@@ -16,6 +16,7 @@
     "@mui/system": "^5.15.2",
     "@mui/x-date-pickers": "^6.19.0",
     "@reduxjs/toolkit": "^2.0.1",
+    "@uiw/react-md-editor": "^4.0.3",
     "axios": "^1.6.3",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.10",

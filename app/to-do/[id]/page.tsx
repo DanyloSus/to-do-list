@@ -2,7 +2,7 @@
 "use client";
 
 //import from libraries
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
@@ -20,6 +20,7 @@ import { setToDosHandle } from "@/elements/TodoElements/TodoList";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Loading from "@/elements/Form/Loading";
+import MDEditor from "@uiw/react-md-editor";
 
 const Page = ({ params }: ParamsIdType) => {
   //state for checking is toDo thing was changed
@@ -37,7 +38,6 @@ const Page = ({ params }: ParamsIdType) => {
   const todos = useSelector((state: Store) => state.todos);
   const disabled = useSelector((state: Store) => state.disbled);
 
-  console.log(dateTime);
   useEffect(() => {
     //filter todo by id
     const todo = todos.find((todo) => todo._id === params.id);
@@ -66,6 +66,10 @@ const Page = ({ params }: ParamsIdType) => {
   const dispatch = useDispatch();
 
   const router = useRouter();
+
+  const handleChangeMode = () => {
+    setIsViewMode((value) => !value);
+  };
 
   const setDisabled = (state: boolean) => {
     dispatch(setDisabledRedux(state));
@@ -134,26 +138,39 @@ const Page = ({ params }: ParamsIdType) => {
         handleDelete={handleDelete}
         handleUpdate={handleUpdate}
         isViewMode={isViewMode}
-        setIsViewMode={setIsViewMode}
+        handleChangeMode={handleChangeMode}
       />
       <hr />
-      <HeadingArea
-        id={params.id}
-        heading={heading}
-        setIsChanged={setIsChanged}
-        setHeading={setHeading}
-        disabled={disabled}
-        status={status}
-      />
-      <hr />
-      <ContentArea
-        id={params.id}
-        content={content}
-        setIsChanged={setIsChanged}
-        setContent={setContent}
-        disabled={disabled}
-        status={status}
-      />
+      {isViewMode ? (
+        <>
+          <Typography component="h1" sx={{ fontSize: "56px" }}>
+            {heading}
+          </Typography>
+          <hr />
+          <MDEditor.Markdown source={content} />
+        </>
+      ) : (
+        <>
+          <HeadingArea
+            id={params.id}
+            heading={heading}
+            setIsChanged={setIsChanged}
+            setHeading={setHeading}
+            disabled={disabled}
+            status={status}
+          />
+          <hr />
+          <ContentArea
+            id={params.id}
+            content={content}
+            setIsChanged={setIsChanged}
+            setContent={setContent}
+            disabled={disabled}
+            status={status}
+          />
+        </>
+      )}
+
       {disabled ? <Loading /> : null}
     </Box>
   ) : (
