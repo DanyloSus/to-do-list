@@ -1,7 +1,7 @@
 //internal imports
 import AuthProvider from "@/elements/AuthProvider";
 import ThemeProviderElement from "@/elements/ThemeProviderElement";
-import { ChildrenType } from "@/types/types";
+import { ChildrenType } from "@/types";
 //import styles
 import "./globals.css";
 

@@ -13,7 +13,7 @@ import classes from "./../to-do.module.css";
 import HeadingArea from "@/elements/ToDoRightSection/HeadingArea";
 import ContentArea from "@/elements/ToDoRightSection/ContentArea";
 import Header from "@/elements/ToDoRightSection/Header";
-import { ParamsIdType } from "@/types/types";
+import { ParamsIdType } from "@/types";
 import { Store } from "@/lib/redux/store";
 import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/disabledSlice";
 import { setToDosHandle } from "@/elements/TodoElements/TodoList";

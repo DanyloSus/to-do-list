@@ -2,7 +2,7 @@
 "use client";
 
 //internal imports
-import { ChildrenType } from "@/types/types";
+import { ChildrenType } from "@/types";
 
 //import from libraries
 import { createTheme, ThemeProvider } from "@mui/material/styles";

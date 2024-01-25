@@ -1,5 +1,5 @@
 //internal imports
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/next-auth/authOptions";
 
 //import from libraries
 import { Box, Button, Typography } from "@mui/material";

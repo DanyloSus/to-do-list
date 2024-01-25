@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import store from "@/lib/redux/store";
 import TodoList, { setToDosHandle } from "@/elements/TodoElements/TodoList";
 import ThemeProviderElement from "@/elements/ThemeProviderElement";
-import { ChildrenType } from "@/types/types";
+import { ChildrenType } from "@/types";
 import Loading from "@/elements/Form/Loading";
 
 export default function RootLayout({ children }: ChildrenType) {

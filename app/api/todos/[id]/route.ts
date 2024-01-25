@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 //internal imports
 import { connectMongoDB } from "@/lib/mongodb/mongodb";
 import ToDo from "@/models/To-Do";
-import { ParamsIdType } from "@/types/types";
+import { ParamsIdType } from "@/types";
 
 export async function PUT(req: NextRequest, { params }: ParamsIdType) {
   const { id } = params; // get params

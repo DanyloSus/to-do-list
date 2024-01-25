@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 //internal imports
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/next-auth/authOptions";
 import FormRegister from "./form";
 import Form from "@/elements/Form/Form";
 
