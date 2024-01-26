@@ -63,6 +63,21 @@ const Page = ({ params }: ParamsIdType) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todos]);
 
+  useEffect(() => {
+    if (!isChanged) return;
+
+    const handleOnBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      return (e.returnValue = "");
+    };
+    window.addEventListener("beforeunload", handleOnBeforeUnload, {
+      capture: true,
+    });
+    return () => {
+      window.removeEventListener("beforeunload", handleOnBeforeUnload);
+    };
+  }, [isChanged]); // thanks to Colby Fayock
+
   const dispatch = useDispatch();
 
   const router = useRouter();
