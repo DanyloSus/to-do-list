@@ -1,4 +1,5 @@
 //internal imports
+import TypingElement from "@/elements/TypingElement";
 import { authOptions } from "@/lib/next-auth/authOptions";
 
 //import from libraries
@@ -23,9 +24,7 @@ const MainPage = async () => {
       height="100vh"
     >
       <Box maxWidth="966px" textAlign="center">
-        <Typography component="h1" variant="h2" fontWeight="700">
-          Welcome to the <i>To Do List</i>
-        </Typography>
+        <TypingElement />
         <Typography my="1rem">
           App by <a href="https://github.com/DanyloSus">Sushko Danylo</a>
         </Typography>
