@@ -2,7 +2,7 @@
 import { Button, FormControlLabel } from "@mui/material";
 import Box from "@mui/material/Box";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import AlertDeleting from "./AlertYesNo";
 import SettingsAlert from "./SettingAlert";
@@ -29,6 +29,28 @@ type Props = {
 const Header = (props: Props) => {
   const [isOpenError, setIsOpenError] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
+
+  const [count, setCount] = useState(5);
+  const [isDDoSDisabled, setIsDDoSDisabled] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(5);
+      setIsDDoSDisabled(false);
+      console.log("Again");
+    }, 10000); // 1 second
+
+    return () => clearInterval(interval);
+  }, [count]);
+
+  const handleDDoS = () => {
+    if (count > 0) {
+      setCount((prevCount) => prevCount - 1);
+      console.log(count - 1);
+    } else {
+      setIsDDoSDisabled(true);
+    }
+  };
 
   return (
     <Box display="flex" alignItems="center" justifyContent="end" gap={2}>
@@ -91,11 +113,17 @@ const Header = (props: Props) => {
           <Button
             variant="contained"
             disabled={
-              props.disabled || !props.isChanged || props.status === "completed"
+              props.disabled ||
+              !props.isChanged ||
+              props.status === "completed" ||
+              isDDoSDisabled
             }
-            onClick={() => props.handleUpdate()}
+            onClick={() => {
+              handleDDoS();
+              props.handleUpdate();
+            }}
           >
-            Submit
+            {isDDoSDisabled ? "DDoS Defense" : "Submit"}
           </Button>
           <Button
             onClick={() => props.handleUpdate("completed")}
