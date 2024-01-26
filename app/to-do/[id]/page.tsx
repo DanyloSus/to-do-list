@@ -13,7 +13,7 @@ import classes from "./../to-do.module.css";
 import HeadingArea from "@/elements/ToDoRightSection/HeadingArea";
 import ContentArea from "@/elements/ToDoRightSection/ContentArea";
 import Header from "@/elements/ToDoRightSection/Header";
-import { ParamsIdType } from "@/types";
+import { ParamsIdType } from "@/types/types";
 import { Store } from "@/lib/redux/store";
 import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/disabledSlice";
 import { setToDosHandle } from "@/elements/TodoElements/TodoList";
@@ -109,14 +109,14 @@ const Page = ({ params }: ParamsIdType) => {
         newStatus,
       })
       .finally(() => {
+        if (newStatus === "deleted") {
+          router.push(`/to-do/${params.id}?filter=deleted`);
+        } else if (newStatus === "completed") {
+          router.push(`/to-do/${params.id}?filter=completed`);
+        } else {
+          router.push(`/to-do/${params.id}?filter=active`);
+        }
         setToDosHandle(session?.user.id, dispatch).finally(() => {
-          if (newStatus === "deleted") {
-            router.push(`/to-do/${params.id}?filter=deleted`);
-          } else if (newStatus === "completed") {
-            router.push(`/to-do/${params.id}?filter=completed`);
-          } else {
-            router.push(`/to-do/${params.id}?filter=active`);
-          }
           setDisabled(false);
         });
       });

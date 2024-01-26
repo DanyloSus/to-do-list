@@ -37,4 +37,5 @@
   text-overflow: ellipsis;
   max-width: 365px;
   width: 100%;
+  background-color: transparent;
 }

@@ -1,3 +1,5 @@
+"use client";
+
 //import from libraries
 import { styled } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";

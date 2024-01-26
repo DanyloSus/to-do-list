@@ -1,5 +1,5 @@
 //internal imports
-import { ChildrenType } from "@/types";
+import { ChildrenType } from "@/types/types";
 //import from libraries
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";

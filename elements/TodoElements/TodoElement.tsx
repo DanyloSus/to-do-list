@@ -8,6 +8,7 @@ import { grey } from "@mui/material/colors";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { ReadonlyURLSearchParams } from "next/navigation";
+import MDEditor from "@uiw/react-md-editor";
 
 type Props = {
   disabled: boolean;
@@ -48,9 +49,10 @@ const TodoElement = (props: TodoInfo & Props) => {
       >
         {props.heading || "Heading"}
       </Typography>
-      <Typography className={classes.TodoBlock_Content}>
-        {props.content || "Content"}
-      </Typography>
+      <MDEditor.Markdown
+        source={props.content || "Content"}
+        className={classes.TodoBlock_Content}
+      />
     </Button>
   );
 };

@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
 
 //internal imports
-import { CredentialsType } from "@/types";
+import { CredentialsType } from "@/types/types";
 import User from "@/models/User";
 import { connectMongoDB } from "@/lib/mongodb/mongodb";
 
