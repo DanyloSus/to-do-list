@@ -79,7 +79,7 @@ const TodoList = (props: Props) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.session]);
+  }, [props.session?.user.id]);
   // function for creating new ToDo
   function createTodoHandler() {
     setDisabled(true);
