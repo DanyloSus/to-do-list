@@ -51,6 +51,27 @@ type Props = {
 
 const TodoList = (props: Props) => {
   const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState(5);
+  const [isDDoSDisabled, setIsDDoSDisabled] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount(5);
+      setIsDDoSDisabled(false);
+      console.log("Again");
+    }, 10000); // 1 second
+
+    return () => clearInterval(interval);
+  }, [count]);
+
+  const handleDDoS = () => {
+    if (count > 0) {
+      setCount((prevCount) => prevCount - 1);
+      console.log(count - 1);
+    } else {
+      setIsDDoSDisabled(true);
+    }
+  };
 
   const disabled = useSelector((state: Store) => state.disbled);
   const error = useSelector((state: Store) => state.error);
@@ -91,9 +112,10 @@ const TodoList = (props: Props) => {
         status: "active",
       })
       .finally(() => {
-        setToDosHandle(props.session?.user.id, dispatch).finally(() =>
-          setDisabled(false)
-        );
+        setToDosHandle(props.session?.user.id, dispatch).finally(() => {
+          setDisabled(false);
+          handleDDoS();
+        });
       });
   }
 
@@ -139,7 +161,11 @@ const TodoList = (props: Props) => {
                   {props.session?.user?.name}
                 </Typography>
               </Button>
-              <Button disabled={disabled} onClick={createTodoHandler}>
+              <Button
+                disabled={disabled || isDDoSDisabled}
+                onClick={createTodoHandler}
+              >
+                {isDDoSDisabled ? "DDoS Defense" : null}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
