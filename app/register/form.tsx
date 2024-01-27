@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -212,7 +212,7 @@ const FormRegister = () => {
           <Button variant="contained" type="submit" disabled={isRegistering}>
             Register
           </Button>
-            {isRegistering ? <Loading /> : null}
+          {isRegistering ? <Loading /> : null}
         </Box>
       </FormControl>
     </form>

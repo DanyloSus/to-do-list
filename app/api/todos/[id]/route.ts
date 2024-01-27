@@ -28,9 +28,9 @@ export async function PUT(req: NextRequest, { params }: ParamsIdType) {
     }); // update user's info
     return NextResponse.json({ message: "ToDo is updated" }, { status: 201 });
   } catch (error) {
-    console.log("User didn't update");
+    console.log("ToDo didn't update");
     return NextResponse.json(
-      { message: `User didn't update ${error}` },
+      { message: `ToDo didn't update ${error}` },
       { status: 502 }
     );
   }

@@ -7,7 +7,16 @@ import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/d
 
 //import from libraries
 import { SetStateAction, Dispatch, useEffect, useState } from "react";
-import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
 import grey from "@mui/material/colors/grey";
 import { signOut } from "next-auth/react";
 import axios from "axios";
@@ -23,6 +32,7 @@ import {
   useSearchParams,
 } from "next/navigation";
 import Loading from "../Form/Loading";
+import Settings from "./Settings";
 
 //export Promise for getting ToDo list
 export const setToDosHandle = (
@@ -146,40 +156,31 @@ const TodoList = (props: Props) => {
               height="3rem"
               overflow="hidden"
             >
-              <Button
-                disabled={disabled}
-                onClick={() => {
-                  setDisabled(true);
-                  signOut();
-                }}
-              >
-                <Typography
-                  component="h2"
-                  variant="h4"
-                  sx={{ cursor: "pointer" }}
+              <Typography component="h2" variant="h4">
+                {props.session?.user?.name}
+              </Typography>
+              <Box>
+                <Settings />
+                <Button
+                  disabled={disabled || isDDoSDisabled}
+                  onClick={createTodoHandler}
                 >
-                  {props.session?.user?.name}
-                </Typography>
-              </Button>
-              <Button
-                disabled={disabled || isDDoSDisabled}
-                onClick={createTodoHandler}
-              >
-                {isDDoSDisabled ? "DDoS Defense" : null}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
-              </Button>
+                  {isDDoSDisabled ? "DDoS Defense" : null}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                </Button>
+              </Box>
             </Box>
             <ButtonGroup
               variant="text"
