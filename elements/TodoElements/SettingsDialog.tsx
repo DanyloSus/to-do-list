@@ -6,7 +6,7 @@ import { Form, Formik, useFormik } from "formik";
 import CustomTextField from "../Form/TextField";
 import { Box, Button } from "@mui/material";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import * as Yup from "yup";
 import { regExp } from "@/app/register/form";
 import { useDispatch, useSelector } from "react-redux";
@@ -109,20 +109,33 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
+  const handleDelete = () => {
+    dispatch(setDisabled(true));
+    axios
+      .delete(`/api/user?id=${session.data?.user.id}`)
+      .finally(() => {
+        dispatch(setDisabled(false));
+        signOut();
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(setDisabled(false));
+        formik.setErrors({
+          password: true,
+          newPassword: true,
+          newPasswordAgain: "Something went wrong!",
+        });
+      });
+  };
+
   return (
-    <Dialog open={props.open}>
+    <Dialog open={props.open} onClose={props.handleClose}>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent>
         <hr />
         <hr />
         <form>
-          <Box
-            maxWidth="25rem"
-            display="flex"
-            flexDirection="column"
-            gap={2}
-            py={1}
-          >
+          <Box display="flex" flexDirection="column" gap={2} py={1}>
             <CustomTextField
               label="Current Password"
               value={formik.values.password}
@@ -160,8 +173,16 @@ const SettingsDialog = (props: Props) => {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button disabled={disabled} onClick={props.handleClose}>
-          Cancel
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={handleDelete}
+          disabled={disabled}
+        >
+          Delete
+        </Button>
+        <Button disabled={disabled} onClick={() => signOut()}>
+          Log Out
         </Button>
         <Button
           onClick={formik.submitForm}
