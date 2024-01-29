@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 //internal imports
 import CustomTextField from "@/elements/Form/TextField";
 import Loading from "@/elements/Form/Loading";
+import { signIn } from "next-auth/react";
 
 //regular expretion for check is latin
 export const regExp = /^[a-zA-Z]$/;
@@ -119,6 +120,23 @@ const FormRegister = () => {
     },
   });
 
+  const handleGuest = async () => {
+    setIsRegistering(true);
+    const res = await signIn("credentials", {
+      username: "admin",
+      password: "eKmvL3954dbpmTyrcnFN",
+      redirect: false,
+    }).catch((err) => console.log(err));
+
+    if (!res?.ok) {
+      setError("Something went wrong ;(");
+      setIsRegistering(false);
+      return;
+    }
+
+    router.replace("to-do");
+  };
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormControl
@@ -198,11 +216,13 @@ const FormRegister = () => {
           justifyContent="space-between"
         >
           <Box display="flex" gap={3}>
-            <Link href="/to-do">
-              <Button variant="text" disabled={isRegistering}>
-                Guest
-              </Button>
-            </Link>
+            <Button
+              variant="text"
+              disabled={isRegistering}
+              onClick={handleGuest}
+            >
+              Guest
+            </Button>
             <Link href="/login">
               <Button variant="outlined" disabled={isRegistering}>
                 Login

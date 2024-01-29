@@ -76,12 +76,16 @@ const FormLogin = () => {
   });
 
   const handleGuest = async () => {
+    setIsRegistering(true);
     const res = await signIn("credentials", {
       username: "admin",
       password: "eKmvL3954dbpmTyrcnFN",
       redirect: false,
     }).catch((err) => console.log(err));
+
     if (!res?.ok) {
+      setError("Something went wrong ;(");
+      setIsRegistering(false);
       return;
     }
 
