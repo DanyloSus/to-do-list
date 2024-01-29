@@ -1,13 +1,17 @@
 //internal imports
+import Loading from "@/elements/Form/Loading";
 import TypingElement from "@/elements/TypingElement";
 import { authOptions } from "@/lib/next-auth/authOptions";
 
 //import from libraries
 import { Box, Button, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import PageGuestButton from "./pageGuestButton";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import PageButtons from "./pageButtons";
 
 const MainPage = async () => {
   //get session
@@ -29,20 +33,7 @@ const MainPage = async () => {
         <Typography my="1rem">
           App by <a href="https://github.com/DanyloSus">Sushko Danylo</a>
         </Typography>
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          gap="3rem"
-        >
-          <PageGuestButton />
-          <Link href="/login">
-            <Button variant="outlined">Login</Button>
-          </Link>
-          <Link href="/register">
-            <Button variant="contained">Register</Button>
-          </Link>
-        </Box>
+        <PageButtons />
       </Box>
       <Box
         display="flex"
