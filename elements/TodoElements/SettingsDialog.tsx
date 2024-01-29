@@ -12,6 +12,7 @@ import { regExp } from "@/app/register/form";
 import { useDispatch, useSelector } from "react-redux";
 import { Store } from "@/lib/redux/store";
 import { setDisabled } from "@/lib/redux/disabled/features/disabledSlice";
+import { useState } from "react";
 
 type Props = {
   open: boolean;
@@ -25,6 +26,7 @@ type FormikValues = {
 };
 
 const SettingsDialog = (props: Props) => {
+  const [isDeleting, setIsDeleting] = useState(false);
   const disabled = useSelector((state: Store) => state.disbled);
   const session = useSession();
   const dispatch = useDispatch();
@@ -176,14 +178,39 @@ const SettingsDialog = (props: Props) => {
       </DialogContent>
       <DialogActions>
         {session.data?.user.email === "admin@admin" ? null : (
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={handleDelete}
-            disabled={disabled}
-          >
-            Delete
-          </Button>
+          <>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => setIsDeleting(true)}
+              disabled={disabled}
+            >
+              Delete
+            </Button>
+            <Dialog open={isDeleting} onClose={() => setIsDeleting(false)}>
+              <DialogContent>
+                If You delete your account, You will not be able to access your
+                To Do
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  variant="contained"
+                  onClick={() => setIsDeleting(false)}
+                  disabled={disabled}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDelete}
+                  disabled={disabled}
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
         )}
 
         <Button disabled={disabled} onClick={() => signOut()}>
