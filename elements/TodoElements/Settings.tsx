@@ -4,12 +4,16 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import SettingsDialog from "./SettingsDialog";
 
-const Settings = () => {
+type Props = {
+  disabled: boolean;
+};
+
+const Settings = (props: Props) => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>
+      <Button disabled={props.disabled} onClick={() => setOpen(true)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

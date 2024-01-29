@@ -193,9 +193,9 @@ const TodoList = (props: Props) => {
                 </Typography>
               )}
               <Box ml="auto">
-                <Settings />
+                <Settings disabled={disabled || loading} />
                 <Button
-                  disabled={disabled || isDDoSDisabled}
+                  disabled={disabled || isDDoSDisabled || loading}
                   onClick={createTodoHandler}
                 >
                   {isDDoSDisabled ? "DDoS Defense" : null}
@@ -218,7 +218,7 @@ const TodoList = (props: Props) => {
             <ButtonGroup
               variant="text"
               aria-label="outlined button group"
-              disabled={disabled}
+              disabled={disabled || loading}
             >
               <Button
                 onClick={() => router.push(`${pathname}?filter=active`)}
