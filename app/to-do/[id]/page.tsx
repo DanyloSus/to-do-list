@@ -21,6 +21,11 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Loading from "@/elements/Form/Loading";
 import MDEditor from "@uiw/react-md-editor";
+import {
+  TodoInfo,
+  changeToDo,
+  deleteToDo,
+} from "@/lib/redux/todos/features/todosSlice";
 
 const Page = ({ params }: ParamsIdType) => {
   //state for checking is toDo thing was changed
@@ -93,13 +98,19 @@ const Page = ({ params }: ParamsIdType) => {
   //function for deleting
   function handleDelete() {
     setDisabled(true);
-    axios.delete(`/api/todos?id=${params.id}`).finally(() => {
-      //set new ToDos
-      setToDosHandle(session?.user.id, dispatch).then(() => {
-        router.push("/to-do");
-        setDisabled(false);
+    if (session?.user.email === "admin@admin") {
+      dispatch(deleteToDo(params.id));
+      router.push("/to-do");
+      setDisabled(false);
+    } else {
+      axios.delete(`/api/todos?id=${params.id}`).finally(() => {
+        //set new ToDos
+        setToDosHandle(session?.user.id, dispatch, session).then(() => {
+          router.push("/to-do");
+          setDisabled(false);
+        });
       });
-    });
+    }
   }
 
   //function for updating
@@ -107,34 +118,58 @@ const Page = ({ params }: ParamsIdType) => {
     setIsChanged(false);
     setDisabled(true);
 
-    console.log("active");
-
-    axios
-      .put(`/api/todos/${params.id}`, {
-        newHeading: heading,
-        newContent: content,
+    if (session?.user.email === "admin@admin") {
+      const newToDoInfo: TodoInfo = {
+        heading,
+        content,
         attachedId: session?.user.id,
-        newDateTime:
+        dateTime:
           newStatus === "completed" ||
           newStatus === "deleted" ||
           (newStatus === "active" &&
             (status === "deleted" || status === "completed"))
             ? null
             : dateTime,
-        newStatus,
-      })
-      .finally(() => {
-        if (newStatus === "deleted") {
-          router.push(`/to-do/${params.id}?filter=deleted`);
-        } else if (newStatus === "completed") {
-          router.push(`/to-do/${params.id}?filter=completed`);
-        } else {
-          router.push(`/to-do/${params.id}?filter=active`);
-        }
-        setToDosHandle(session?.user.id, dispatch).finally(() => {
-          setDisabled(false);
+        status: newStatus,
+        _id: params.id,
+      };
+      dispatch(changeToDo(newToDoInfo));
+      if (newStatus === "deleted") {
+        router.push(`/to-do/${params.id}?filter=deleted`);
+      } else if (newStatus === "completed") {
+        router.push(`/to-do/${params.id}?filter=completed`);
+      } else {
+        router.push(`/to-do/${params.id}?filter=active`);
+      }
+      setDisabled(false);
+    } else {
+      axios
+        .put(`/api/todos/${params.id}`, {
+          newHeading: heading,
+          newContent: content,
+          attachedId: session?.user.id,
+          newDateTime:
+            newStatus === "completed" ||
+            newStatus === "deleted" ||
+            (newStatus === "active" &&
+              (status === "deleted" || status === "completed"))
+              ? null
+              : dateTime,
+          newStatus,
+        })
+        .finally(() => {
+          if (newStatus === "deleted") {
+            router.push(`/to-do/${params.id}?filter=deleted`);
+          } else if (newStatus === "completed") {
+            router.push(`/to-do/${params.id}?filter=completed`);
+          } else {
+            router.push(`/to-do/${params.id}?filter=active`);
+          }
+          setToDosHandle(session?.user.id, dispatch, session).finally(() => {
+            setDisabled(false);
+          });
         });
-      });
+    }
   }
 
   return hasUser ? (

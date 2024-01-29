@@ -1,6 +1,6 @@
 //internal imports
 import TodoElement from "./TodoElement";
-import { setToDos } from "@/lib/redux/todos/features/todosSlice";
+import { addToDo, setToDos } from "@/lib/redux/todos/features/todosSlice";
 import { Store } from "@/lib/redux/store";
 import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
 import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/disabledSlice";
@@ -21,10 +21,9 @@ import grey from "@mui/material/colors/grey";
 import { signOut } from "next-auth/react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch as DispatchRedux } from "@reduxjs/toolkit";
+import { Dispatch as DispatchRedux, nanoid } from "@reduxjs/toolkit";
 import { Session } from "next-auth";
 import { setError } from "@/lib/redux/error/features/errorSlice";
-import Link from "next/link";
 import {
   useParams,
   usePathname,
@@ -37,19 +36,32 @@ import Settings from "./Settings";
 //export Promise for getting ToDo list
 export const setToDosHandle = (
   id: string | undefined,
-  dispatch: DispatchRedux
+  dispatch: DispatchRedux,
+  session?: Session | null
 ) => {
   return new Promise((resolve, reject) => {
-    axios
-      .get(`/api/todos?attachedId=${id}`) // get values by user id
-      .then((res) => {
-        dispatch(setToDos(res.data.toDos)); // set values in redux
-        resolve(res.data.toDos); // Resolve with the data you fetched
-      })
-      .catch((error) => {
-        dispatch(setError(true));
-        reject(error); // Reject with the error if any
-      });
+    if (session?.user.email === "admin@admin") {
+      const storedTodoList = localStorage.getItem("ToDos");
+      console.log("storedTodoList", storedTodoList);
+      const localToDos: TodoInfo[] & [] = storedTodoList
+        ? JSON.parse(storedTodoList)
+        : [];
+      console.log("localToDos", localToDos);
+
+      dispatch(setToDos({ toDos: localToDos, test: "51" }));
+      resolve(localToDos);
+    } else {
+      axios
+        .get(`/api/todos?attachedId=${id}`) // get values by user id
+        .then((res) => {
+          dispatch(setToDos({ toDos: res.data.toDos, test: "57" })); // set values in redux
+          resolve(res.data.toDos); // Resolve with the data you fetched
+        })
+        .catch((error) => {
+          dispatch(setError(true));
+          reject(error); // Reject with the error if any
+        });
+    }
   });
 };
 
@@ -86,6 +98,7 @@ const TodoList = (props: Props) => {
   const disabled = useSelector((state: Store) => state.disbled);
   const error = useSelector((state: Store) => state.error);
   const todos = useSelector((state: Store) => state.todos);
+  console.log("todos", todos);
   // get session values
   const dispatch = useDispatch();
 
@@ -100,10 +113,12 @@ const TodoList = (props: Props) => {
 
   useEffect(() => {
     // get values of user's toDos
-    setLoading(true);
-    setToDosHandle(props.session?.user.id, dispatch).finally(() =>
-      setLoading(false)
-    );
+    if (props.session?.user.email) {
+      setLoading(true);
+      setToDosHandle(props.session?.user.id, dispatch, props.session).finally(
+        () => setLoading(false)
+      );
+    }
 
     if (props.session?.user.id) {
       props.setLoading(false);
@@ -114,19 +129,36 @@ const TodoList = (props: Props) => {
   // function for creating new ToDo
   function createTodoHandler() {
     setDisabled(true);
-    axios
-      .post("/api/todos", {
-        heading: "",
-        content: "",
-        attachedId: props.session?.user.id,
-        status: "active",
-      })
-      .finally(() => {
-        setToDosHandle(props.session?.user.id, dispatch).finally(() => {
-          setDisabled(false);
-          handleDDoS();
+    if (props.session?.user.email === "admin@admin") {
+      dispatch(
+        addToDo({
+          heading: "",
+          content: "",
+          attachedId: props.session?.user.id,
+          _id: nanoid(),
+          status: "active",
+        })
+      );
+      setDisabled(false);
+    } else {
+      axios
+        .post("/api/todos", {
+          heading: "",
+          content: "",
+          attachedId: props.session?.user.id,
+          status: "active",
+        })
+        .finally(() => {
+          setToDosHandle(
+            props.session?.user.id,
+            dispatch,
+            props.session
+          ).finally(() => {
+            setDisabled(false);
+            handleDDoS();
+          });
         });
-      });
+    }
   }
 
   return (
@@ -149,17 +181,18 @@ const TodoList = (props: Props) => {
           <Box>
             <Box
               display="flex"
-              justifyContent="space-between"
               px={1}
               py={1}
               alignItems="center"
               height="3rem"
               overflow="hidden"
             >
-              <Typography component="h2" variant="h4">
-                {props.session?.user?.name}
-              </Typography>
-              <Box>
+              {props.session?.user.email === "admin@admin" ? null : (
+                <Typography component="h2" variant="h4">
+                  {props.session?.user?.name}
+                </Typography>
+              )}
+              <Box ml="auto">
                 <Settings />
                 <Button
                   disabled={disabled || isDDoSDisabled}

@@ -134,53 +134,58 @@ const SettingsDialog = (props: Props) => {
       <DialogContent>
         <hr />
         <hr />
-        <form>
-          <Box display="flex" flexDirection="column" gap={2} py={1}>
-            <CustomTextField
-              label="Current Password"
-              value={formik.values.password}
-              error={Boolean(formik.errors.password)}
-              helperText={formik.errors.password}
-              onChange={formik.handleChange}
-              required
-              type="password"
-              name="password"
-              disabled={disabled}
-            />
-            <CustomTextField
-              label="New Password"
-              value={formik.values.newPassword}
-              error={Boolean(formik.errors.newPassword)}
-              helperText={formik.errors.newPassword}
-              onChange={formik.handleChange}
-              required
-              type="password"
-              name="newPassword"
-              disabled={disabled}
-            />
-            <CustomTextField
-              label="Repeat New Password"
-              value={formik.values.newPasswordAgain}
-              error={Boolean(formik.errors.newPasswordAgain)}
-              helperText={formik.errors.newPasswordAgain}
-              onChange={formik.handleChange}
-              required
-              type="password"
-              name="newPasswordAgain"
-              disabled={disabled}
-            />
-          </Box>
-        </form>
+        {session.data?.user.email === "admin@admin" ? null : (
+          <form>
+            <Box display="flex" flexDirection="column" gap={2} py={1}>
+              <CustomTextField
+                label="Current Password"
+                value={formik.values.password}
+                error={Boolean(formik.errors.password)}
+                helperText={formik.errors.password}
+                onChange={formik.handleChange}
+                required
+                type="password"
+                name="password"
+                disabled={disabled}
+              />
+              <CustomTextField
+                label="New Password"
+                value={formik.values.newPassword}
+                error={Boolean(formik.errors.newPassword)}
+                helperText={formik.errors.newPassword}
+                onChange={formik.handleChange}
+                required
+                type="password"
+                name="newPassword"
+                disabled={disabled}
+              />
+              <CustomTextField
+                label="Repeat New Password"
+                value={formik.values.newPasswordAgain}
+                error={Boolean(formik.errors.newPasswordAgain)}
+                helperText={formik.errors.newPasswordAgain}
+                onChange={formik.handleChange}
+                required
+                type="password"
+                name="newPasswordAgain"
+                disabled={disabled}
+              />
+            </Box>
+          </form>
+        )}
       </DialogContent>
       <DialogActions>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={handleDelete}
-          disabled={disabled}
-        >
-          Delete
-        </Button>
+        {session.data?.user.email === "admin@admin" ? null : (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleDelete}
+            disabled={disabled}
+          >
+            Delete
+          </Button>
+        )}
+
         <Button disabled={disabled} onClick={() => signOut()}>
           Log Out
         </Button>

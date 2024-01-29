@@ -7,6 +7,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import PageGuestButton from "./pageGuestButton";
 
 const MainPage = async () => {
   //get session
@@ -34,9 +35,7 @@ const MainPage = async () => {
           justifyContent="center"
           gap="3rem"
         >
-          <Link href="/to-do">
-            <Button variant="text">Guest</Button>
-          </Link>
+          <PageGuestButton />
           <Link href="/login">
             <Button variant="outlined">Login</Button>
           </Link>

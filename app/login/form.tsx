@@ -75,6 +75,19 @@ const FormLogin = () => {
     },
   });
 
+  const handleGuest = async () => {
+    const res = await signIn("credentials", {
+      username: "admin",
+      password: "eKmvL3954dbpmTyrcnFN",
+      redirect: false,
+    }).catch((err) => console.log(err));
+    if (!res?.ok) {
+      return;
+    }
+
+    router.replace("to-do");
+  };
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormControl
@@ -114,11 +127,9 @@ const FormLogin = () => {
           justifyContent="space-between"
         >
           <Box display="flex" gap={3}>
-            <Link href="/to-do">
-              <Button variant="text" disabled={isSigning}>
-                Guest
-              </Button>
-            </Link>
+            <Button variant="text" disabled={isSigning} onClick={handleGuest}>
+              Guest
+            </Button>
             <Link href="/register">
               <Button variant="outlined" disabled={isSigning}>
                 Register

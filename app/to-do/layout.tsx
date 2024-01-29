@@ -2,14 +2,14 @@
 "use client";
 
 //import from libraries
-import { Box, Typography } from "@mui/material";
-import { Provider, useDispatch } from "react-redux";
-import { Suspense, useEffect, useState } from "react";
+import { Box } from "@mui/material";
+import { Provider } from "react-redux";
+import { Suspense, useState } from "react";
 import { useSession } from "next-auth/react";
 
 //internal imports
 import store from "@/lib/redux/store";
-import TodoList, { setToDosHandle } from "@/elements/TodoElements/TodoList";
+import TodoList from "@/elements/TodoElements/TodoList";
 import ThemeProviderElement from "@/elements/ThemeProviderElement";
 import { ChildrenType } from "@/types/types";
 import Loading from "@/elements/Form/Loading";
