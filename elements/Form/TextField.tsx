@@ -4,7 +4,6 @@ import { TextField } from "@mui/material";
 
 // create custom textfield
 const CustomTextField = styled(TextField)({
-  backgroundColor: "white",
   borderRadius: "1rem",
   width: "100%",
   "& > .MuiFormHelperText-root": {

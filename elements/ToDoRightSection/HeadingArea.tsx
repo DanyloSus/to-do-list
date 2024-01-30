@@ -12,6 +12,7 @@ type Props = {
   setHeading: Dispatch<SetStateAction<string>>;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
   disabled: boolean;
+  darkMode: boolean;
   status: string;
 };
 
@@ -25,7 +26,9 @@ const HeadingArea = (props: Props) => {
   return (
     <TextareaAutosize
       placeholder="Heading of your to-do"
-      className={classes.ToDoBox_Heading}
+      className={
+        props.darkMode ? classes.ToDoBox_Heading__Dark : classes.ToDoBox_Heading
+      }
       value={props.heading}
       onChange={changeHeadingHandler}
       disabled={

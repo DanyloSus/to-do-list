@@ -16,6 +16,7 @@ type Props = {
   router: AppRouterInstance;
   params: Params;
   searchParams: ReadonlyURLSearchParams;
+  darkMode: boolean;
 };
 
 const TodoElement = (props: TodoInfo & Props) => {
@@ -32,11 +33,13 @@ const TodoElement = (props: TodoInfo & Props) => {
         );
         props.setDisabled(false);
       }}
-      className={classes.TodoBlock}
+      className={props.darkMode ? classes.TodoBlockDark : classes.TodoBlock}
       sx={
         props.params.id === props._id
           ? {
-              backgroundColor: `${grey[300]} !important`,
+              backgroundColor: `${
+                props.darkMode ? grey[800] : grey[300]
+              } !important`,
             }
           : {}
       }
@@ -52,6 +55,7 @@ const TodoElement = (props: TodoInfo & Props) => {
       <MDEditor.Markdown
         source={props.content || "Content"}
         className={classes.TodoBlock_Content}
+        style={{ color: props.darkMode ? grey[100] : grey[900] }}
       />
     </Button>
   );

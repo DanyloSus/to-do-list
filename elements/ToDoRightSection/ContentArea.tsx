@@ -4,6 +4,7 @@ import classes from "@/app/to-do/to-do.module.css";
 //import from libraries
 import { Dispatch, SetStateAction } from "react";
 import MDEditor from "@uiw/react-md-editor";
+import { grey } from "@mui/material/colors";
 
 //type of ContentArea's props
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
   setContent: Dispatch<SetStateAction<string>>;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
   disabled: boolean;
+  darkMode: boolean;
   status: string;
 }
 
@@ -27,11 +29,20 @@ const ContentArea = (props: Props) => {
     props.status === "deleted" ? (
     <MDEditor.Markdown
       source={props.content}
-      className={classes.ToDoBox_Content}
+      style={
+        props.darkMode
+          ? {
+              backgroundColor: grey[900],
+              color: "white !important"
+            }
+          : {}
+      }
     />
   ) : (
     <MDEditor
-      className={classes.ToDoBox_Content}
+      className={
+        props.darkMode ? classes.ToDoBox_Content__Dark : classes.ToDoBox_Content
+      }
       value={props.content}
       onChange={changeContentHandler}
       extraCommands={[]}

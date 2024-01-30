@@ -41,6 +41,7 @@ const Page = ({ params }: ParamsIdType) => {
 
   //get all todos
   const todos = useSelector((state: Store) => state.todos);
+  const darkMode = useSelector((state: Store) => state.darkMode);
   const disabled = useSelector((state: Store) => state.disbled);
 
   useEffect(() => {
@@ -208,6 +209,7 @@ const Page = ({ params }: ParamsIdType) => {
             setHeading={setHeading}
             disabled={disabled}
             status={status}
+            darkMode={darkMode}
           />
           <hr />
           <ContentArea
@@ -217,6 +219,7 @@ const Page = ({ params }: ParamsIdType) => {
             setContent={setContent}
             disabled={disabled}
             status={status}
+            darkMode={darkMode}
           />
         </>
       )}

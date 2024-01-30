@@ -96,6 +96,7 @@ const TodoList = (props: Props) => {
   };
 
   const disabled = useSelector((state: Store) => state.disbled);
+  const darkMode = useSelector((state: Store) => state.darkMode);
   const error = useSelector((state: Store) => state.error);
   const todos = useSelector((state: Store) => state.todos);
   console.log("todos", todos);
@@ -227,7 +228,7 @@ const TodoList = (props: Props) => {
                   searchParams.get("filter") === "deleted"
                     ? {}
                     : {
-                        backgroundColor: grey[300],
+                        backgroundColor: darkMode ? grey[800] : grey[300],
                       }
                 }
               >
@@ -238,7 +239,7 @@ const TodoList = (props: Props) => {
                 sx={
                   searchParams.get("filter") === "completed"
                     ? {
-                        backgroundColor: grey[300],
+                        backgroundColor: darkMode ? grey[800] : grey[300],
                       }
                     : {}
                 }
@@ -250,7 +251,7 @@ const TodoList = (props: Props) => {
                 sx={
                   searchParams.get("filter") === "deleted"
                     ? {
-                        backgroundColor: grey[300],
+                        backgroundColor: darkMode ? grey[800] : grey[300],
                       }
                     : {}
                 }
@@ -285,6 +286,7 @@ const TodoList = (props: Props) => {
                       params={params}
                       searchParams={searchParams}
                       dateTime={todo.dateTime}
+                      darkMode={darkMode}
                     />
                   );
                 }

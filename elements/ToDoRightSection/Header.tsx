@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import AlertDeleting from "./AlertYesNo";
 import SettingsAlert from "./SettingAlert";
-import SwitchCustom from "./Switch";
+import SwitchCustom from "../Switch";
 
 //type of Header's props
 type Props = {

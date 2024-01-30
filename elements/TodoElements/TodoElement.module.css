@@ -14,9 +14,28 @@
 
   border-radius: 0 !important;
 }
+.TodoBlockDark {
+  overflow: hidden;
+  overflow-wrap: break-word;
+  padding: 8px;
+
+  max-width: 365px;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  text-align: left !important;
+
+  text-transform: none !important;
+
+  border-radius: 0 !important;
+}
 
 .TodoBlock:hover {
   background-color: #eeeeee;
+}
+.TodoBlockDark:hover {
+  background-color: #424242;
 }
 
 .TodoBlock_Heading {

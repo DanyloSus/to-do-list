@@ -4,12 +4,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import todosSlice from "./todos/features/todosSlice";
 import disabledSlice from "./disabled/features/disabledSlice";
 import errorSlice from "./error/features/errorSlice";
+import modeSlice from "./darkMode/features/modeSlice";
 
 //create store
 const store = configureStore({
   reducer: {
     todos: todosSlice,
     disbled: disabledSlice,
+    darkMode: modeSlice,
     error: errorSlice,
   },
 });

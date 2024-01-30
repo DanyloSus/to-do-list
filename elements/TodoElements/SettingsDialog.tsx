@@ -4,7 +4,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Form, Formik, useFormik } from "formik";
 import CustomTextField from "../Form/TextField";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import * as Yup from "yup";
@@ -12,7 +12,9 @@ import { regExp } from "@/app/register/form";
 import { useDispatch, useSelector } from "react-redux";
 import { Store } from "@/lib/redux/store";
 import { setDisabled } from "@/lib/redux/disabled/features/disabledSlice";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import SwitchCustom from "../Switch";
+import { setDarkMode as setDarkModeRedux } from "@/lib/redux/darkMode/features/modeSlice";
 
 type Props = {
   open: boolean;
@@ -27,6 +29,8 @@ type FormikValues = {
 
 const SettingsDialog = (props: Props) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const disabled = useSelector((state: Store) => state.disbled);
   const session = useSession();
   const dispatch = useDispatch();
@@ -130,11 +134,21 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
+  const handleChangeMode = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value === "true";
+    console.log(newValue, e.target.value);
+
+    setIsDarkMode((val) => !val);
+    dispatch(setDarkModeRedux(newValue));
+  };
+
   return (
     <Dialog open={props.open} onClose={props.handleClose}>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent>
         <hr />
+        <Typography component="h4">Dark mode:</Typography>
+        <SwitchCustom value={isDarkMode} onChange={handleChangeMode} />
         <hr />
         {session.data?.user.email === "admin@admin" ? null : (
           <form>
@@ -217,7 +231,13 @@ const SettingsDialog = (props: Props) => {
           Log Out
         </Button>
         <Button
-          onClick={formik.submitForm}
+          onClick={() => {
+            if (session.data?.user.email === "admin@admin") {
+              props.handleClose();
+            } else {
+              formik.submitForm();
+            }
+          }}
           variant="contained"
           disabled={disabled}
         >
