@@ -134,12 +134,9 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
-  const handleChangeMode = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value === "true";
-    console.log(newValue, e.target.value);
-
+  const handleChangeMode = () => {
     setIsDarkMode((val) => !val);
-    dispatch(setDarkModeRedux(newValue));
+    dispatch(setDarkModeRedux(!isDarkMode));
   };
 
   return (
