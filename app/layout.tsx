@@ -4,6 +4,7 @@ import ThemeProviderElement from "@/elements/ThemeProviderElement";
 import { ChildrenType } from "@/types/types";
 //import styles
 import "./globals.css";
+import LightProvider from "@/elements/lightProvider";
 
 //export site's metadata
 export const metadata = {
@@ -15,9 +16,9 @@ export default function RootLayout({ children }: ChildrenType) {
   return (
     <html lang="en">
       <body>
-        <ThemeProviderElement>
+        <LightProvider>
           <AuthProvider>{children}</AuthProvider>
-        </ThemeProviderElement>
+        </LightProvider>
       </body>
     </html>
   );

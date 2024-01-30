@@ -224,7 +224,13 @@ const SettingsDialog = (props: Props) => {
           </>
         )}
 
-        <Button disabled={disabled} onClick={() => signOut()}>
+        <Button
+          disabled={disabled}
+          onClick={() => {
+            dispatch(setDisabled(true));
+            signOut().finally(() => dispatch(setDisabled(false)));
+          }}
+        >
           Log Out
         </Button>
         <Button

@@ -11,7 +11,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { Provider, useSelector } from "react-redux";
 import store, { Store } from "@/lib/redux/store";
 
-const lightTheme = createTheme({
+export const lightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
