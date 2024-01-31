@@ -14,6 +14,7 @@ import ThemeProviderElement from "@/elements/ThemeProviderElement";
 import { ChildrenType } from "@/types/types";
 import Loading from "@/elements/Form/Loading";
 import LoadingEllement from "./loading";
+import { Wrapper } from "@/elements/ToDoRightSection/Wrapper";
 
 export default function RootLayout({ children }: ChildrenType) {
   const [loading, setLoading] = useState(true);
@@ -47,9 +48,7 @@ export default function RootLayout({ children }: ChildrenType) {
                 session={session}
                 loading={loading}
               />
-              <Box width="100%" height="100vh" ml="365px">
-                {children}
-              </Box>
+              <Wrapper>{children}</Wrapper>
             </Box>
           </ThemeProviderElement>
         )}

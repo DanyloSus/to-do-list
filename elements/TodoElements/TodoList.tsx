@@ -11,14 +11,10 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import grey from "@mui/material/colors/grey";
-import { signOut } from "next-auth/react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch as DispatchRedux, nanoid } from "@reduxjs/toolkit";
@@ -32,6 +28,8 @@ import {
 } from "next/navigation";
 import Loading from "../Form/Loading";
 import Settings from "./Settings";
+import { Wrapper } from "./ListWrapper";
+import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
 
 //export Promise for getting ToDo list
 export const setToDosHandle = (
@@ -99,9 +97,13 @@ const TodoList = (props: Props) => {
   const darkMode = useSelector((state: Store) => state.darkMode);
   const error = useSelector((state: Store) => state.error);
   const todos = useSelector((state: Store) => state.todos);
-  console.log("todos", todos);
+  const hamburger = useSelector((state: Store) => state.hamburger);
   // get session values
   const dispatch = useDispatch();
+
+  const mediaQuery = useMediaQuery("(max-width:600px)");
+
+  console.log("mediaQuery", mediaQuery);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -167,17 +169,12 @@ const TodoList = (props: Props) => {
       {props.loading ? (
         <></>
       ) : (
-        <Box
-          maxWidth="365px"
-          width="100%"
-          height="100%"
-          maxHeight="100vh"
-          border={`1px solid ${grey[300]}`}
-          display="flex"
-          flexDirection="column"
-          position="fixed"
-          left="0px"
-          top="0px"
+        <Wrapper
+          left={mediaQuery && hamburger ? "0%" : "-100%"}
+          sx={{
+            background: darkMode ? grey[900] : "white",
+            transition: "left 0.3s ease-in-out",
+          }}
         >
           <Box>
             <Box
@@ -214,6 +211,26 @@ const TodoList = (props: Props) => {
                     />
                   </svg>
                 </Button>
+                {mediaQuery ? (
+                  <Button
+                    onClick={() => dispatch(setHamburger(false))}
+                    disabled={disabled || loading}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 18 18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </Button>
+                ) : null}
               </Box>
             </Box>
             <ButtonGroup
@@ -298,7 +315,7 @@ const TodoList = (props: Props) => {
               </Typography>
             )}
           </Box>
-        </Box>
+        </Wrapper>
       )}
     </>
   );

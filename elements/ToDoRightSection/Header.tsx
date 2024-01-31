@@ -1,5 +1,5 @@
 //import from libraries
-import { Button, FormControlLabel } from "@mui/material";
+import { Button, FormControlLabel, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -7,6 +7,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AlertDeleting from "./AlertYesNo";
 import SettingsAlert from "./SettingAlert";
 import SwitchCustom from "../Switch";
+import { useDispatch } from "react-redux";
+import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
 
 //type of Header's props
 type Props = {
@@ -33,6 +35,10 @@ const Header = (props: Props) => {
   const [count, setCount] = useState(5);
   const [isDDoSDisabled, setIsDDoSDisabled] = useState(false);
 
+  const mediaQuery = useMediaQuery("(max-width:600px)");
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCount(5);
@@ -53,7 +59,33 @@ const Header = (props: Props) => {
   };
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="end" gap={2}>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent={mediaQuery ? "inherit" : "end"}
+      gap={2}
+      overflow={mediaQuery ? "auto" : "inherit"}
+    >
+      {mediaQuery ? (
+        <Button
+          onClick={() => dispatch(setHamburger(true))}
+          disabled={props.disabled}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
+          </svg>
+        </Button>
+      ) : null}
       {props.status === "deleted" || props.status === "completed" ? (
         <>
           <Button

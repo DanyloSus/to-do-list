@@ -5,6 +5,7 @@ import todosSlice from "./todos/features/todosSlice";
 import disabledSlice from "./disabled/features/disabledSlice";
 import errorSlice from "./error/features/errorSlice";
 import modeSlice from "./darkMode/features/modeSlice";
+import hamSlice from "./responsive/features/hamSlice";
 
 //create store
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
     disbled: disabledSlice,
     darkMode: modeSlice,
     error: errorSlice,
+    hamburger: hamSlice,
   },
 });
 
