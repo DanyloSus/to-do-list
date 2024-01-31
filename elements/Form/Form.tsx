@@ -4,6 +4,7 @@ import { ChildrenType } from "@/types/types";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import grey from "@mui/material/colors/grey";
+import { Wrapper } from "./FormWraper";
 
 // type of Form's props
 type Props = {
@@ -13,16 +14,7 @@ type Props = {
 // Form's window element
 const Form = (props: Props & ChildrenType) => {
   return (
-    <Box
-      position="absolute"
-      top="50%"
-      left="50%"
-      border={`1px solid ${grey[400]}`}
-      p={5}
-      borderRadius={3}
-      width="500px"
-      sx={{ transform: "translate(-50%,-50%)" }}
-    >
+    <Wrapper>
       <Typography
         variant="h4"
         fontWeight="700"
@@ -32,7 +24,7 @@ const Form = (props: Props & ChildrenType) => {
         {props.heading}
       </Typography>
       {props.children}
-    </Box>
+    </Wrapper>
   );
 };
 

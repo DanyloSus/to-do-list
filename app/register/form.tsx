@@ -145,6 +145,7 @@ const FormRegister = () => {
           flexDirection: "column",
           gap: 3,
           mt: 3,
+          p: 1,
         }}
       >
         <Box display="flex" gap={3}>
