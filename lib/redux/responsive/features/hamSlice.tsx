@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState = false;
+const initialState = true;
 
 const hamSlice = createSlice({
   name: "hamburger",

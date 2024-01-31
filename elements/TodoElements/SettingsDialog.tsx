@@ -29,9 +29,9 @@ type FormikValues = {
 
 const SettingsDialog = (props: Props) => {
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const disabled = useSelector((state: Store) => state.disbled);
+  const isDarkMode: boolean = useSelector((state: Store) => state.darkMode);
   const session = useSession();
   const dispatch = useDispatch();
 
@@ -115,7 +115,7 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
-  const handleDelete = () => {
+  const handleDelete: () => void = () => {
     dispatch(setDisabled(true));
     axios
       .delete(`/api/user?id=${session.data?.user.id}`)
@@ -134,8 +134,9 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
+  console.log(isDarkMode);
+
   const handleChangeMode = () => {
-    setIsDarkMode((val) => !val);
     dispatch(setDarkModeRedux(!isDarkMode));
   };
 
@@ -145,7 +146,7 @@ const SettingsDialog = (props: Props) => {
       <DialogContent>
         <hr />
         <Typography component="h4">Dark mode:</Typography>
-        <SwitchCustom value={isDarkMode} onChange={handleChangeMode} />
+        <SwitchCustom checked={isDarkMode} onChange={handleChangeMode} />
         <hr />
         {session.data?.user.email === "admin@admin" ? null : (
           <form>

@@ -9,6 +9,8 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { ReadonlyURLSearchParams } from "next/navigation";
 import MDEditor from "@uiw/react-md-editor";
+import { useDispatch } from "react-redux";
+import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
 
 type Props = {
   disabled: boolean;
@@ -20,6 +22,7 @@ type Props = {
 };
 
 const TodoElement = (props: TodoInfo & Props) => {
+  const dispatch = useDispatch();
   return (
     <Button
       onClick={() => {
@@ -32,6 +35,7 @@ const TodoElement = (props: TodoInfo & Props) => {
           }`
         );
         props.setDisabled(false);
+        dispatch(setHamburger(false));
       }}
       className={props.darkMode ? classes.TodoBlockDark : classes.TodoBlock}
       sx={
