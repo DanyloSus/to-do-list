@@ -1,16 +1,17 @@
 "use client";
 
 //import from libraries
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 
 //import styles
 import classes from "./to-do.module.css";
 import ReturnButton from "@/elements/ToDoRightSection/ReturnButton";
 
 const Page = () => {
+  const mediaQuery = useMediaQuery("(max-width: 600px)");
   return (
     <Box p={2} overflow="hidden auto" className={classes.ToDoBox}>
-      <ReturnButton disabled={false} />
+      {mediaQuery ? <ReturnButton disabled={false} /> : null}
     </Box>
   );
 };
