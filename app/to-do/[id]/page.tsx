@@ -1,12 +1,14 @@
-//useState needs client side
+//many things need USR
 "use client";
 
 //import from libraries
-import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import dayjs, { Dayjs } from "dayjs";
+import { Box, Typography } from "@mui/material";
+import axios from "axios";
+import MDEditor from "@uiw/react-md-editor";
 
 //internal imports
 import classes from "./../to-do.module.css";
@@ -17,10 +19,7 @@ import { ParamsIdType } from "@/types/types";
 import { Store } from "@/lib/redux/store";
 import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/disabledSlice";
 import { setToDosHandle } from "@/elements/TodoElements/TodoList";
-import { useRouter } from "next/navigation";
-import axios from "axios";
 import Loading from "@/elements/Form/Loading";
-import MDEditor from "@uiw/react-md-editor";
 import {
   TodoInfo,
   changeToDo,
@@ -37,9 +36,10 @@ const Page = ({ params }: ParamsIdType) => {
   const [dateTime, setDateTime] = useState<Date | null>();
   const [isViewMode, setIsViewMode] = useState(false);
 
+  // get session data
   const { data: session } = useSession();
 
-  //get all todos
+  //get redux info
   const todos = useSelector((state: Store) => state.todos);
   const darkMode = useSelector((state: Store) => state.darkMode);
   const disabled = useSelector((state: Store) => state.disbled);
@@ -69,6 +69,7 @@ const Page = ({ params }: ParamsIdType) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todos]);
 
+  // prevent exit if document changed
   useEffect(() => {
     if (!isChanged) return;
 
@@ -88,10 +89,12 @@ const Page = ({ params }: ParamsIdType) => {
 
   const router = useRouter();
 
+  // change visible mode
   const handleChangeMode = () => {
     setIsViewMode((value) => !value);
   };
 
+  // set disabled
   const setDisabled = (state: boolean) => {
     dispatch(setDisabledRedux(state));
   };
@@ -99,6 +102,8 @@ const Page = ({ params }: ParamsIdType) => {
   //function for deleting
   function handleDelete() {
     setDisabled(true);
+
+    // check is user in guest mode
     if (session?.user.email === "admin@admin") {
       dispatch(deleteToDo(params.id));
       router.push("/to-do");
@@ -119,6 +124,7 @@ const Page = ({ params }: ParamsIdType) => {
     setIsChanged(false);
     setDisabled(true);
 
+    // check is user in guest mode
     if (session?.user.email === "admin@admin") {
       const newToDoInfo: TodoInfo = {
         heading,
@@ -134,7 +140,9 @@ const Page = ({ params }: ParamsIdType) => {
         status: newStatus,
         _id: params.id,
       };
+
       dispatch(changeToDo(newToDoInfo));
+
       if (newStatus === "deleted") {
         router.push(`/to-do/${params.id}?filter=deleted`);
       } else if (newStatus === "completed") {
@@ -142,6 +150,7 @@ const Page = ({ params }: ParamsIdType) => {
       } else {
         router.push(`/to-do/${params.id}?filter=active`);
       }
+
       setDisabled(false);
     } else {
       axios

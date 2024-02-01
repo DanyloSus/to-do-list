@@ -1,12 +1,18 @@
 //internal imports
-import TodoElement from "./TodoElement";
 import { addToDo, setToDos } from "@/lib/redux/todos/features/todosSlice";
 import { Store } from "@/lib/redux/store";
 import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
 import { setDisabled as setDisabledRedux } from "@/lib/redux/disabled/features/disabledSlice";
+import { setError } from "@/lib/redux/error/features/errorSlice";
+import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
+import Settings from "./Settings";
+import TodoElement from "./TodoElement";
+import { Wrapper } from "./ListWrapper";
+import Loading from "../Form/Loading";
 
 //import from libraries
 import { SetStateAction, Dispatch, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -14,22 +20,16 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import grey from "@mui/material/colors/grey";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { Dispatch as DispatchRedux, nanoid } from "@reduxjs/toolkit";
 import { Session } from "next-auth";
-import { setError } from "@/lib/redux/error/features/errorSlice";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import Loading from "../Form/Loading";
-import Settings from "./Settings";
-import { Wrapper } from "./ListWrapper";
-import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
+import axios from "axios";
+import grey from "@mui/material/colors/grey";
 
 //export Promise for getting ToDo list
 export const setToDosHandle = (
@@ -38,14 +38,15 @@ export const setToDosHandle = (
   session?: Session | null
 ) => {
   return new Promise((resolve, reject) => {
+    // checking is user in Guest mode
     if (session?.user.email === "admin@admin") {
-      const storedTodoList = localStorage.getItem("ToDos");
+      const storedTodoList = localStorage.getItem("ToDos"); // get local ToDos
       const localToDos: TodoInfo[] & [] = storedTodoList
         ? JSON.parse(storedTodoList)
         : [];
 
-      dispatch(setToDos({ toDos: localToDos, test: "51" }));
-      resolve(localToDos);
+      dispatch(setToDos({ toDos: localToDos, test: "51" })); // set local ToDos
+      resolve(localToDos); // send local ToDos
     } else {
       axios
         .get(`/api/todos?attachedId=${id}`) // get values by user id
@@ -61,6 +62,7 @@ export const setToDosHandle = (
   });
 };
 
+// props of todos' list
 type Props = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   session: Session | null;
@@ -68,11 +70,13 @@ type Props = {
 };
 
 const TodoList = (props: Props) => {
-  const [loading, setLoading] = useState(false);
-  const [count, setCount] = useState(5);
-  const [isDDoSDisabled, setIsDDoSDisabled] = useState(false);
+  const [loading, setLoading] = useState(false); // state of loading
+
+  const [count, setCount] = useState(5); // DDoS defense, count
+  const [isDDoSDisabled, setIsDDoSDisabled] = useState(false); // DDoS defense, value
 
   useEffect(() => {
+    // create interval of restarting count of DDoS
     const interval = setInterval(() => {
       setCount(5);
       setIsDDoSDisabled(false);
@@ -81,6 +85,7 @@ const TodoList = (props: Props) => {
     return () => clearInterval(interval);
   }, [count]);
 
+  // function for DDoS
   const handleDDoS = () => {
     if (count > 0) {
       setCount((prevCount) => prevCount - 1);
@@ -89,20 +94,21 @@ const TodoList = (props: Props) => {
     }
   };
 
+  // values from redux
   const disabled = useSelector((state: Store) => state.disbled);
   const darkMode = useSelector((state: Store) => state.darkMode);
   const error = useSelector((state: Store) => state.error);
   const todos = useSelector((state: Store) => state.todos);
   const hamburger = useSelector((state: Store) => state.hamburger);
-  // get session values
+
   const dispatch = useDispatch();
 
-  const mediaQuery = useMediaQuery("(max-width:600px)");
+  const mediaQuery = useMediaQuery("(max-width:600px)"); // is screen's width less than 600px
 
-  const pathname = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const params = useParams();
+  const pathname = usePathname(); // get pathname
+  const router = useRouter(); // get router
+  const searchParams = useSearchParams(); // function for searching params
+  const params = useParams(); // get params
 
   const setDisabled = (state: boolean) => {
     dispatch(setDisabledRedux(state));
@@ -123,9 +129,12 @@ const TodoList = (props: Props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.session?.user.id]);
+
   // function for creating new ToDo
   function createTodoHandler() {
     setDisabled(true);
+
+    // if Guest mode then add local
     if (props.session?.user.email === "admin@admin") {
       dispatch(
         addToDo({

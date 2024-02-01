@@ -1,7 +1,9 @@
+//import from libraries
 import Switch, { SwitchProps } from "@mui/material/Switch";
 import { grey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 
+// custom ios switch from Material UI manual
 const SwitchCustom = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({

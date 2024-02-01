@@ -1,9 +1,12 @@
+// styled needs USR
 "use client";
 
+//import from libraries
 import { Box } from "@mui/material";
-import grey from "@mui/material/colors/grey";
 import { styled } from "@mui/material/styles";
+import grey from "@mui/material/colors/grey";
 
+// responsive wrapper of todos' list
 export const Wrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",

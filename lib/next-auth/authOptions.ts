@@ -1,6 +1,7 @@
+//import from libraries
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { NextAuthOptions } from "next-auth";
 
 //internal imports
 import { CredentialsType } from "@/types/types";
@@ -17,27 +18,31 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        const { username, password } = credentials as CredentialsType;
-        try {
-          await connectMongoDB();
-          const user = await User.findOne({ username });
+        const { username, password } = credentials as CredentialsType; // get values from credentials
 
-          if (!username || !password) {
-            return null;
-          }
+        if (!username || !password) {
+          // if some value is null or undefined then return null
+          return null;
+        }
+
+        try {
+          await connectMongoDB(); // connect to MongoDB
+          const user = await User.findOne({ username }); // find user by username
 
           const isCorrectPasswords = await bcrypt.compare(
+            // value of compared passwords of current password with hashed on server
             password,
             user.password
           );
 
           if (!isCorrectPasswords) {
+            // if values are not equal then return null
             return null;
           }
 
-          return user;
+          return user; // return user if everything is okay
         } catch (error) {
-          console.log(error);
+          console.log(error); // log if some error
         }
       },
     }),

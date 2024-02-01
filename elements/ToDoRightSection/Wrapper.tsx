@@ -1,8 +1,11 @@
+// styled needs USR
 "use client";
 
+//import from libraries
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
+// responsive wrapper of ToDo right section
 export const Wrapper = styled(Box)(({ theme }) => ({
   height: "100vh",
   [theme.breakpoints.up("sm")]: {

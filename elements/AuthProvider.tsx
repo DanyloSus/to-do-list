@@ -3,6 +3,7 @@
 
 //import from libraries
 import { SessionProvider } from "next-auth/react";
+
 //internal imports
 import { ChildrenType } from "@/types/types";
 

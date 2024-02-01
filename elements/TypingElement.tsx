@@ -1,12 +1,14 @@
+// states need CSR
 "use client";
 
-import { Box, Button, Typography } from "@mui/material";
+//import from libraries
 import { useEffect, useState } from "react";
 import { ReactTyped } from "react-typed";
+import { Box, Button, Typography } from "@mui/material";
 
 const TypingElement = () => {
-  const [query, setQuery] = useState(0);
-  const [text, setText] = useState("");
+  const [query, setQuery] = useState(0); // state of query
+  const [text, setText] = useState(""); // value of query
 
   useEffect(() => {
     switch (query) {

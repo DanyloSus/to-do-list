@@ -1,10 +1,10 @@
 //import from libraries
-import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 
 //internal imports
-import User from "@/models/User";
 import { connectMongoDB } from "@/lib/mongodb/mongodb";
+import User from "@/models/User";
 
 export async function POST(req: NextRequest) {
   await connectMongoDB(); // connect db
@@ -43,10 +43,13 @@ export async function POST(req: NextRequest) {
 
   try {
     await User.create(newData); // create one user
+
     console.log("User is created");
+
     return NextResponse.json({ message: "User is created" }, { status: 201 });
   } catch (error) {
     console.log("User is not created");
+
     return NextResponse.json(
       { message: `User is not created ${error}` },
       { status: 502 }

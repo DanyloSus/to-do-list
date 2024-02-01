@@ -1,14 +1,14 @@
 //import from libraries
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Button, FormControlLabel, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-
+// intetnal imports
+import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
 import AlertDeleting from "./AlertYesNo";
 import SettingsAlert from "./SettingAlert";
 import SwitchCustom from "../Switch";
-import { useDispatch } from "react-redux";
-import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
 
 //type of Header's props
 type Props = {
@@ -29,17 +29,18 @@ type Props = {
 };
 
 const Header = (props: Props) => {
-  const [isOpenError, setIsOpenError] = useState(false);
-  const [isOpenSettings, setIsOpenSettings] = useState(false);
+  const [isOpenError, setIsOpenError] = useState(false); // value of deleting dialog
+  const [isOpenSettings, setIsOpenSettings] = useState(false); // value of settings dialog
 
-  const [count, setCount] = useState(5);
-  const [isDDoSDisabled, setIsDDoSDisabled] = useState(false);
+  const [count, setCount] = useState(5); // state of DDoS defense, count
+  const [isDDoSDisabled, setIsDDoSDisabled] = useState(false); // state of DDoS defense
 
-  const mediaQuery = useMediaQuery("(max-width:600px)");
+  const mediaQuery = useMediaQuery("(max-width:600px)"); // is screen's width less than 600px
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // interval for DDoS defense
     const interval = setInterval(() => {
       setCount(5);
       setIsDDoSDisabled(false);
@@ -49,6 +50,7 @@ const Header = (props: Props) => {
     return () => clearInterval(interval);
   }, [count]);
 
+  // function for DDoS
   const handleDDoS = () => {
     if (count > 0) {
       setCount((prevCount) => prevCount - 1);

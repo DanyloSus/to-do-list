@@ -1,10 +1,11 @@
+// styled needs USR
 "use client";
 
 //import from libraries
 import { styled } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
 
-// create custom textfield
+// create custom loading
 const CustomCircularProgress = styled(CircularProgress)({
   position: "absolute",
   top: "50%",
@@ -15,6 +16,7 @@ const CustomCircularProgress = styled(CircularProgress)({
   marginLeft: "-24px",
 });
 
+// element of loading
 const Loading = () => {
   return <CustomCircularProgress size={48} />;
 };

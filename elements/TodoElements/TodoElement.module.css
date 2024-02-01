@@ -58,3 +58,15 @@
   width: 100%;
   background-color: transparent;
 }
+
+@media screen and (max-width: 600px) {
+  .TodoBlock {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .TodoBlockDark {
+    max-width: 100%;
+    width: 100%;
+  }
+}

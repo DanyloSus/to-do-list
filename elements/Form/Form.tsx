@@ -1,10 +1,9 @@
 //internal imports
 import { ChildrenType } from "@/types/types";
-//import from libraries
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import grey from "@mui/material/colors/grey";
 import { Wrapper } from "./FormWraper";
+
+//import from libraries
+import Typography from "@mui/material/Typography";
 
 // type of Form's props
 type Props = {

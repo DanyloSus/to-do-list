@@ -5,7 +5,7 @@ const nextConfig = {
     serverComponentsExternalPackages: ["mongoose"],
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, // because without it, app won't render ;(
   },
 };
 

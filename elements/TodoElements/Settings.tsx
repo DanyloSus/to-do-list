@@ -1,15 +1,20 @@
+// use state needs USR
 "use client";
 
-import Button from "@mui/material/Button";
-import { useState } from "react";
+//internal imports
 import SettingsDialog from "./SettingsDialog";
 
+//import from libraries
+import { useState } from "react";
+import Button from "@mui/material/Button";
+
+// setting's props
 type Props = {
   disabled: boolean;
 };
 
 const Settings = (props: Props) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // local open state
 
   return (
     <>

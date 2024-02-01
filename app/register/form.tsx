@@ -2,19 +2,19 @@
 "use client";
 
 //import from libraries
-import FormControl from "@mui/material/FormControl";
-import { useFormik } from "formik";
 import { useState } from "react";
-import * as Yup from "yup";
-import { Box, Button, Typography } from "@mui/material";
-import Link from "next/link";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import { Box, Button, Typography } from "@mui/material";
+import axios from "axios";
+import Link from "next/link";
+import FormControl from "@mui/material/FormControl";
+import * as Yup from "yup";
 
 //internal imports
 import CustomTextField from "@/elements/Form/TextField";
 import Loading from "@/elements/Form/Loading";
-import { signIn } from "next-auth/react";
+import { handleGuest } from "@/lib/next-auth/guestMode";
 
 //regular expretion for check is latin
 export const regExp = /^[a-zA-Z]$/;
@@ -120,23 +120,6 @@ const FormRegister = () => {
     },
   });
 
-  const handleGuest = async () => {
-    setIsRegistering(true);
-    const res = await signIn("credentials", {
-      username: "admin",
-      password: "eKmvL3954dbpmTyrcnFN",
-      redirect: false,
-    }).catch((err) => console.log(err));
-
-    if (!res?.ok) {
-      setError("Something went wrong ;(");
-      setIsRegistering(false);
-      return;
-    }
-
-    router.replace("to-do");
-  };
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormControl
@@ -220,7 +203,9 @@ const FormRegister = () => {
             <Button
               variant="text"
               disabled={isRegistering}
-              onClick={handleGuest}
+              onClick={() =>
+                handleGuest({ setError, setLoading: setIsRegistering, router })
+              }
             >
               Guest
             </Button>

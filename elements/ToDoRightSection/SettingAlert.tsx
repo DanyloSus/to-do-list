@@ -1,3 +1,6 @@
+//import from libraries
+import { Dispatch, SetStateAction } from "react";
+import dayjs, { Dayjs } from "dayjs";
 import {
   Button,
   Dialog,
@@ -8,9 +11,8 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
-import dayjs, { Dayjs } from "dayjs";
-import { Dispatch, SetStateAction } from "react";
 
+// props of settings dialog
 type Props = {
   handleClose: () => void;
   setIsChanged: Dispatch<SetStateAction<boolean>>;
@@ -20,6 +22,7 @@ type Props = {
 };
 
 const SettingsAlert = (props: Props) => {
+  // set minimum date
   const minDateTime = dayjs(
     new Date().getFullYear() +
       "-" +

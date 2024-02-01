@@ -1,17 +1,12 @@
 //internal imports
-import Loading from "@/elements/Form/Loading";
 import TypingElement from "@/elements/TypingElement";
 import { authOptions } from "@/lib/next-auth/authOptions";
+import PageButtons from "./pageButtons";
 
 //import from libraries
-import { Box, Button, Typography } from "@mui/material";
-import { getServerSession } from "next-auth";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import PageButtons from "./pageButtons";
+import { getServerSession } from "next-auth";
+import { Box, Typography } from "@mui/material";
 
 const MainPage = async () => {
   //get session

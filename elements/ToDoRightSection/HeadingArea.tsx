@@ -3,7 +3,7 @@ import classes from "@/app/to-do/to-do.module.css";
 
 //import from libraries
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 //type of HeadingArea's props
 type Props = {

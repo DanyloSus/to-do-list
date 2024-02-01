@@ -2,24 +2,25 @@
 "use client";
 
 //import from libraries
-import FormControl from "@mui/material/FormControl";
-import { useFormik } from "formik";
 import { useState } from "react";
-import * as Yup from "yup";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useFormik } from "formik";
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import FormControl from "@mui/material/FormControl";
+import * as Yup from "yup";
 
 //internal imports
-import { regExp } from "../register/form";
 import CustomTextField from "@/elements/Form/TextField";
 import Loading from "@/elements/Form/Loading";
+import { handleGuest } from "@/lib/next-auth/guestMode";
+import { regExp } from "../register/form";
 
 const FormLogin = () => {
   //loading state
   const [isSigning, setIsRegistering] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // error state
 
   //get router
   const router = useRouter();
@@ -75,23 +76,6 @@ const FormLogin = () => {
     },
   });
 
-  const handleGuest = async () => {
-    setIsRegistering(true);
-    const res = await signIn("credentials", {
-      username: "admin",
-      password: "eKmvL3954dbpmTyrcnFN",
-      redirect: false,
-    }).catch((err) => console.log(err));
-
-    if (!res?.ok) {
-      setError("Something went wrong ;(");
-      setIsRegistering(false);
-      return;
-    }
-
-    router.replace("to-do");
-  };
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <FormControl
@@ -131,7 +115,13 @@ const FormLogin = () => {
           justifyContent="space-between"
         >
           <Box display="flex" gap={3}>
-            <Button variant="text" disabled={isSigning} onClick={handleGuest}>
+            <Button
+              variant="text"
+              disabled={isSigning}
+              onClick={() =>
+                handleGuest({ setError, router, setLoading: setIsRegistering })
+              }
+            >
               Guest
             </Button>
             <Link href="/register">

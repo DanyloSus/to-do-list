@@ -1,3 +1,4 @@
+//import from libraries
 import {
   Button,
   Dialog,
@@ -7,6 +8,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 
+// props of setting's dialog
 type Props = {
   handleClose: () => void;
   handleDo: () => void;

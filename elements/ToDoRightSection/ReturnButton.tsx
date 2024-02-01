@@ -1,7 +1,9 @@
+// internal imports
 import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
-import Button from "@mui/material/Button";
-import React from "react";
+
+//import from libraries
 import { useDispatch } from "react-redux";
+import Button from "@mui/material/Button";
 
 type Props = {
   disabled: boolean;
@@ -9,6 +11,7 @@ type Props = {
 
 const ReturnButton = (props: Props) => {
   const dispatch = useDispatch();
+
   return (
     <Button
       onClick={() => dispatch(setHamburger(true))}

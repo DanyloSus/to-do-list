@@ -1,9 +1,10 @@
+// media query needs USR
 "use client";
 
 //import from libraries
 import { Box, useMediaQuery } from "@mui/material";
 
-//import styles
+//internal imports
 import classes from "./to-do.module.css";
 import ReturnButton from "@/elements/ToDoRightSection/ReturnButton";
 

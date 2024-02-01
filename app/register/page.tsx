@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 
 //internal imports
 import { authOptions } from "@/lib/next-auth/authOptions";
-import FormRegister from "./form";
 import Form from "@/elements/Form/Form";
+import FormRegister from "./form";
 
 const RegistrationPage = async () => {
   //get session

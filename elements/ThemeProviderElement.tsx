@@ -3,14 +3,15 @@
 
 //internal imports
 import { ChildrenType } from "@/types/types";
+import store, { Store } from "@/lib/redux/store";
 
 //import from libraries
+import { Provider, useSelector } from "react-redux";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import grey from "@mui/material/colors/grey";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Provider, useSelector } from "react-redux";
-import store, { Store } from "@/lib/redux/store";
 
+// create light theme
 export const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -20,6 +21,7 @@ export const lightTheme = createTheme({
   },
 });
 
+// create dark theme
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -38,6 +40,7 @@ const darkTheme = createTheme({
   },
 });
 
+// internal Element because useSelector need to be wrapped
 const ThemeProviderInside = ({ children }: ChildrenType) => {
   const darkMode = useSelector((state: Store) => state.darkMode);
 
@@ -49,6 +52,7 @@ const ThemeProviderInside = ({ children }: ChildrenType) => {
   );
 };
 
+// wrapper of redux and themes
 const ThemeProviderElement = ({ children }: ChildrenType) => {
   return (
     <Provider store={store}>

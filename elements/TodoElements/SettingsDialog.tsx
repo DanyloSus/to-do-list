@@ -1,26 +1,31 @@
+//internal imports
+import { regExp } from "@/app/register/form";
+import { Store } from "@/lib/redux/store";
+import { setDarkMode as setDarkModeRedux } from "@/lib/redux/darkMode/features/modeSlice";
+import { setDisabled } from "@/lib/redux/disabled/features/disabledSlice";
+import SwitchCustom from "../Switch";
+import CustomTextField from "../Form/TextField";
+
+//import from libraries
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut, useSession } from "next-auth/react";
+import { useFormik } from "formik";
+import { Box, Button, Typography } from "@mui/material";
+import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Form, Formik, useFormik } from "formik";
-import CustomTextField from "../Form/TextField";
-import { Box, Button, Typography } from "@mui/material";
-import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
 import * as Yup from "yup";
-import { regExp } from "@/app/register/form";
-import { useDispatch, useSelector } from "react-redux";
-import { Store } from "@/lib/redux/store";
-import { setDisabled } from "@/lib/redux/disabled/features/disabledSlice";
-import { ChangeEvent, useState } from "react";
-import SwitchCustom from "../Switch";
-import { setDarkMode as setDarkModeRedux } from "@/lib/redux/darkMode/features/modeSlice";
 
+// props of setting's dialog
 type Props = {
   open: boolean;
   handleClose: () => void;
 };
 
+// Formik's values
 type FormikValues = {
   password: string;
   newPassword: string;
@@ -28,13 +33,16 @@ type FormikValues = {
 };
 
 const SettingsDialog = (props: Props) => {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false); // loading while deleting
 
+  // get values of redux
   const disabled = useSelector((state: Store) => state.disbled);
   const isDarkMode: boolean = useSelector((state: Store) => state.darkMode);
-  const session = useSession();
+
+  const session = useSession(); // get session
   const dispatch = useDispatch();
 
+  // set formik of changing password
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -71,6 +79,7 @@ const SettingsDialog = (props: Props) => {
     onSubmit: (e) => handleSubmit(e),
   });
 
+  // function on submit
   const handleSubmit = (e: FormikValues) => {
     dispatch(setDisabled(true));
     if (e.newPassword !== e.newPasswordAgain) {
@@ -115,8 +124,10 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
+  // function of deleting
   const handleDelete: () => void = () => {
     dispatch(setDisabled(true));
+
     axios
       .delete(`/api/user?id=${session.data?.user.id}`)
       .finally(() => {
@@ -134,6 +145,7 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
+  // function of changing dark mode
   const handleChangeMode = () => {
     dispatch(setDarkModeRedux(!isDarkMode));
   };
@@ -234,7 +246,12 @@ const SettingsDialog = (props: Props) => {
         </Button>
         <Button
           onClick={() => {
-            if (session.data?.user.email === "admin@admin") {
+            if (
+              session.data?.user.email === "admin@admin" ||
+              (!formik.values.newPassword &&
+                !formik.values.newPasswordAgain &&
+                !formik.values.password)
+            ) {
               props.handleClose();
             } else {
               formik.submitForm();

@@ -2,12 +2,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
 //internal imports
-import User from "@/models/User";
 import { connectMongoDB } from "@/lib/mongodb/mongodb";
+import User from "@/models/User";
 
 export async function POST(req: NextRequest) {
   try {
     await connectMongoDB(); // connect db
+
     const data = await req.json(); // get values
     const { username, email }: { username: string; email: string } = data; // destructuring
 

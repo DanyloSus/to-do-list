@@ -1,5 +1,5 @@
+// import from libraries
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
-
 import { JWT } from "next-auth/jwt";
 
 // change type of JWT token in callback

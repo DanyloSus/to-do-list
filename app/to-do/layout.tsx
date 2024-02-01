@@ -1,20 +1,20 @@
-//useEffect in TodoList needs client side rendering
+//a lot of things need USR
 "use client";
 
 //import from libraries
-import { Box } from "@mui/material";
-import { Provider } from "react-redux";
 import { Suspense, useState } from "react";
 import { useSession } from "next-auth/react";
+import { Provider } from "react-redux";
+import { Box } from "@mui/material";
 
 //internal imports
 import store from "@/lib/redux/store";
+import { ChildrenType } from "@/types/types";
 import TodoList from "@/elements/TodoElements/TodoList";
 import ThemeProviderElement from "@/elements/ThemeProviderElement";
-import { ChildrenType } from "@/types/types";
 import Loading from "@/elements/Form/Loading";
-import LoadingEllement from "./loading";
 import { Wrapper } from "@/elements/ToDoRightSection/Wrapper";
+import LoadingEllement from "./loading";
 
 export default function RootLayout({ children }: ChildrenType) {
   const [loading, setLoading] = useState(true);

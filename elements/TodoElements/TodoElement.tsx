@@ -1,17 +1,18 @@
 //internal imports
 import { TodoInfo } from "@/lib/redux/todos/features/todosSlice";
+import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
 import classes from "./TodoElement.module.css";
 
 //import from libraries
+import { useDispatch } from "react-redux";
+import { ReadonlyURLSearchParams } from "next/navigation";
+import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { Button, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
-import { ReadonlyURLSearchParams } from "next/navigation";
 import MDEditor from "@uiw/react-md-editor";
-import { useDispatch } from "react-redux";
-import { setHamburger } from "@/lib/redux/responsive/features/hamSlice";
 
+// props of ToDo element
 type Props = {
   disabled: boolean;
   setDisabled: (state: boolean) => void;
@@ -23,6 +24,7 @@ type Props = {
 
 const TodoElement = (props: TodoInfo & Props) => {
   const dispatch = useDispatch();
+
   return (
     <Button
       onClick={() => {

@@ -1,35 +1,30 @@
+// use state needs USR
 "use client";
 
+//internal imports
 import Loading from "@/elements/Form/Loading";
+import { handleGuest } from "@/lib/next-auth/guestMode";
+
+//import from libraries
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
-import { signIn } from "next-auth/react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
 
 const PageButtons = () => {
+  // button's loading, on click
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
-  const handleGuest = async () => {
-    setLoading(true);
-    const res = await signIn("credentials", {
-      username: "admin",
-      password: "eKmvL3954dbpmTyrcnFN",
-      redirect: false,
-    }).catch((err) => console.log(err));
-    if (!res?.ok) {
-      setLoading(false);
-      return;
-    }
-
-    router.replace("to-do");
-  };
+  const router = useRouter(); // get router
 
   return (
     <Box display="flex" alignItems="center" justifyContent="center" gap="3rem">
-      <Button disabled={loading} variant="text" onClick={() => handleGuest()}>
+      <Button
+        disabled={loading}
+        variant="text"
+        onClick={() => handleGuest({ setLoading, router })}
+      >
         Guest
       </Button>
       <Link href="/login">
