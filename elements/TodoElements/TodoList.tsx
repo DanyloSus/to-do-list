@@ -40,11 +40,9 @@ export const setToDosHandle = (
   return new Promise((resolve, reject) => {
     if (session?.user.email === "admin@admin") {
       const storedTodoList = localStorage.getItem("ToDos");
-      console.log("storedTodoList", storedTodoList);
       const localToDos: TodoInfo[] & [] = storedTodoList
         ? JSON.parse(storedTodoList)
         : [];
-      console.log("localToDos", localToDos);
 
       dispatch(setToDos({ toDos: localToDos, test: "51" }));
       resolve(localToDos);
@@ -78,7 +76,6 @@ const TodoList = (props: Props) => {
     const interval = setInterval(() => {
       setCount(5);
       setIsDDoSDisabled(false);
-      console.log("Again");
     }, 10000); // 1 second
 
     return () => clearInterval(interval);
@@ -87,7 +84,6 @@ const TodoList = (props: Props) => {
   const handleDDoS = () => {
     if (count > 0) {
       setCount((prevCount) => prevCount - 1);
-      console.log(count - 1);
     } else {
       setIsDDoSDisabled(true);
     }
@@ -102,8 +98,6 @@ const TodoList = (props: Props) => {
   const dispatch = useDispatch();
 
   const mediaQuery = useMediaQuery("(max-width:600px)");
-
-  console.log("mediaQuery", mediaQuery);
 
   const pathname = usePathname();
   const router = useRouter();

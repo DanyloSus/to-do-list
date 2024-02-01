@@ -31,8 +31,6 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
 
-          console.log(isCorrectPasswords);
-
           if (!isCorrectPasswords) {
             return null;
           }

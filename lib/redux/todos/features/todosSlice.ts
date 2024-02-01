@@ -23,8 +23,6 @@ const todosSlice = createSlice({
       state,
       action: PayloadAction<{ toDos: TodoInfo[] } & { test: string }>
     ) {
-      console.log(action.payload.test);
-
       return action.payload.toDos;
     },
     addToDo(state, action: PayloadAction<TodoInfo>) {

@@ -134,8 +134,6 @@ const SettingsDialog = (props: Props) => {
       });
   };
 
-  console.log(isDarkMode);
-
   const handleChangeMode = () => {
     dispatch(setDarkModeRedux(!isDarkMode));
   };
