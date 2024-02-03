@@ -2,7 +2,7 @@
 "use client";
 
 //import from libraries
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 
 //internal imports
 import classes from "./to-do.module.css";
@@ -13,6 +13,11 @@ const Page = () => {
   return (
     <Box p={2} overflow="hidden auto" className={classes.ToDoBox}>
       {mediaQuery ? <ReturnButton disabled={false} /> : null}
+      <Box textAlign="center" width="100%" mt={10}>
+        <Typography component="h1">
+          Create your first ToDo or open an existing one
+        </Typography>
+      </Box>
     </Box>
   );
 };
