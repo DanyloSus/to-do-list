@@ -104,9 +104,11 @@ const SettingsDialog = (props: Props) => {
         password: e.password,
         newPassword: e.newPassword,
       })
-      .finally(() => {
+      .then((res) => {
         dispatch(setDisabled(false));
-        props.handleClose();
+        if (res.status !== 422) {
+          props.handleClose();
+        }
       })
       .catch((error) => {
         if (error.response.status === 422) {
