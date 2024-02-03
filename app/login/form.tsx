@@ -39,7 +39,8 @@ const FormLogin = () => {
           "len",
           "Must be from 2 to 12 characters",
           (val) => val.length >= 2 && val.length <= 12
-        ),
+        )
+        .test("admin", "You can't sign in how admin", (val) => val === "admin"),
       password: Yup.string()
         .required()
         .test("latin", "Must be latin characters", (val) => !regExp.test(val))
