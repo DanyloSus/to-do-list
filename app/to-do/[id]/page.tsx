@@ -4,6 +4,7 @@
 //import from libraries
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Box, Typography } from "@mui/material";
