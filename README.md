@@ -4,9 +4,9 @@
 
 ## Why is it (site) existing?
 
-Hello!:wave:
+Hello! :wave:
 I am **Danylo Sushko**. I am a **_Front-End React Developer_**.
-I'm looking for a **job** so I wanted to create **something** to show what I know.:cowboy_hat_face:
+I'm looking for a **job** so I wanted to create **something** to show what I know. :cowboy_hat_face:
 
 ## What is the project
 
@@ -15,7 +15,7 @@ A simple To-Do List, where you can register, login, and save To-Dos locally and 
 
 ## What have I used?
 
-I have created the **_To Do List_ **on **React** with some **libraries**.
+I have created the **_To Do List_** on **React** with some **libraries**.
 I have used:
   1. **Next JS 14 version, App routing** (for routing, server-side rendering, etc.)
   2. **Mongo DB** (for DB) and **Mongoose** (for interactions with the DB)
