@@ -51,6 +51,15 @@ const SettingsAlert = (props: Props) => {
       </DialogContent>
       <DialogActions>
         <Button
+          onClick={() => {
+            props.setDateTime(null);
+            props.handleClose();
+          }}
+          variant="outlined"
+        >
+          Reset
+        </Button>
+        <Button
           onClick={props.handleClose}
           variant="contained"
           autoFocus

@@ -222,7 +222,13 @@ const Header = (props: Props) => {
             setIsChanged={props.setIsChanged}
             isOpen={isOpenSettings}
             handleClose={() => setIsOpenSettings(false)}
-            setDateTime={(e) => props.setDateTime(new Date(e!.toString()))}
+            setDateTime={(e) => {
+              if (e === null) {
+                props.setDateTime(e);
+              } else {
+                props.setDateTime(new Date(e.toString()));
+              }
+            }}
             dateTime={props.dateTime}
           />
         </>
