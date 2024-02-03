@@ -61,12 +61,12 @@ const FormRegister = () => {
           "Must be from 2 to 12 characters",
           (val) => val.length >= 2 && val.length <= 12
         )
-        .test("admin", "You can't be admin", (val) => val === "admin"),
+        .test("admin", "You can't be admin", (val) => val !== "admin"),
       email: Yup.string()
         .required()
         .test("latin", "Must be latin characters", (val) => !regExp.test(val))
         .test("not email", "Must have @", (val) => val.includes("@"))
-        .test("admin", "You can't be admin", (val) => val === "admin@admin"),
+        .test("admin", "You can't be admin", (val) => val !== "admin@admin"),
       password: Yup.string()
         .required()
         .test("latin", "Must be latin characters", (val) => !regExp.test(val))
